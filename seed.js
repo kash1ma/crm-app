@@ -1,7 +1,7 @@
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 
-const DB_FILE = "./database.sqlite";
+const DB_FILE = "./database/database.sqlite";
 
 (async function seedDatabase() {
   const db = await open({
