@@ -1,7 +1,7 @@
 setup:
 	npm ci
 test:
-	npx jest
+	npx test
 server:
 	node server.js
 seed:
