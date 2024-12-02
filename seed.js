@@ -1,7 +1,22 @@
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
+const { faker } = require("@faker-js/faker");
 
 const DB_FILE = "./database/database.sqlite";
+
+function createRandomUser() {
+  return {
+    name: faker.person.firstName(),
+    surname: faker.person.lastName(),
+    email: faker.internet.email(),
+    contacts: JSON.stringify([
+      { type: "phone", email: faker.internet.email() },
+      { type: "phone", value: faker.phone.number() },
+    ]),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
 
 (async function seedDatabase() {
   const db = await open({
@@ -21,29 +36,9 @@ const DB_FILE = "./database/database.sqlite";
     )
   `);
 
-  const seedData = [
-    {
-      name: "John",
-      surname: "Doe",
-      lastName: "Smith",
-      contacts: JSON.stringify([
-        { type: "email", value: "john.doe@example.com" },
-        { type: "phone", value: "+123456789" },
-      ]),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      name: "Jane",
-      surname: "Roe",
-      lastName: "",
-      contacts: JSON.stringify([
-        { type: "email", value: "jane.roe@example.com" },
-      ]),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-  ];
+  const seedData = faker.helpers.multiple(createRandomUser, {
+    count: 10,
+  });
 
   for (const client of seedData) {
     await db.run(
