@@ -2,6 +2,7 @@ const express = require("express");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 //Constants
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 //Helpers
 
@@ -197,4 +199,5 @@ app.use((err, req, res, next) => {
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Link is http://localhost:${PORT}/api/clients`);
 });

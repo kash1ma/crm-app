@@ -3,6 +3,8 @@ setup:
 test:
 	npx test
 server:
-	node server.js
+	node server.js  && npx vite
 seed:
 	node seed.js
+frontend:
+	npx vite
