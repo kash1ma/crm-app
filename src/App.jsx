@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getClients } from "../services/clientsService";
+import { Table, Container } from "react-bootstrap";
 
-const ClientList = () => {
+function ClientList() {
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
 
@@ -22,8 +23,32 @@ const ClientList = () => {
     return <div>Error: {error}</div>;
   }
 
+  console.log(clients);
+
   return (
     <div>
+      <Container>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Surname</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clients.map((client) => (
+              <tr key={client.id}>
+                <td>{client.id}</td>
+                <td>{`${client.name} ${client.surname} ${
+                  client.lastName || ""
+                }`}</td>
+                <td>{Date(client.createdAt)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </Container>
       <h1>Client List</h1>
       <ul>
         {clients.map((client) => (
@@ -34,6 +59,6 @@ const ClientList = () => {
       </ul>
     </div>
   );
-};
+}
 
 export default ClientList;
