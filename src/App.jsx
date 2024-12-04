@@ -7,6 +7,7 @@ import {
 import { Table, Container, Button, Modal } from "react-bootstrap";
 import extractDateTime from "../utility/extractDateTime";
 import ClientForm from "./components/CreationForm";
+import Header from "./components/Header";
 
 function ClientList() {
   const [clients, setClients] = useState([]);
@@ -60,6 +61,7 @@ function ClientList() {
 
   return (
     <div>
+      <Header/>
       <Container>
         <Table striped bordered hover>
           <thead>
