@@ -4,6 +4,7 @@ import {
   deleteClient,
   createClient,
 } from "../services/clientsService";
+import fetchClients from "../backendUtils/fetchUsers";
 import { Table, Container, Button, Modal } from "react-bootstrap";
 import extractDateTime from "../utility/extractDateTime";
 import ClientForm from "./components/CreationForm";
@@ -13,15 +14,6 @@ function ClientList() {
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
-
-  const fetchClients = async () => {
-    try {
-      const data = await getClients();
-      setClients(data);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to fetch clients");
-    }
-  };
 
   useEffect(() => {
     fetchClients();
