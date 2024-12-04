@@ -2,6 +2,8 @@ setup:
 	npm ci
 test:
 	npx test
+start:
+	npm start
 server:
 	node server.js
 seed:
