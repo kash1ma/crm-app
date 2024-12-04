@@ -34,6 +34,7 @@ function ClientList() {
     setShow(false);
     fetchClients();
   }
+
   function handleShow() {
     setShow(true);
   }

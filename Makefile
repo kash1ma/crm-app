@@ -5,10 +5,12 @@ test:
 server:
 	node server.js
 seed:
-	node seed.js
+	node backendUtils/seed.js
 frontend:
 	npx vite
 clear:
-	node clearDb.js
+	node backendUtils/clearDb.js
 reset:
 	make clear && make seed && make server
+test:
+	npm run test

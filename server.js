@@ -196,8 +196,12 @@ app.use((err, req, res, next) => {
   }
 });
 
+module.exports = { app, db };
+
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-  console.log(`Link is http://localhost:${PORT}/api/clients`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Link is http://localhost:${PORT}/api/clients`);
+  });
+}

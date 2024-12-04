@@ -1,0 +1,13 @@
+name: tests
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install modules
+        run: make setup
+      - name: Run tests
+        run: make test
