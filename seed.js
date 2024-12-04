@@ -10,7 +10,7 @@ function createRandomUser() {
     surname: faker.person.lastName(),
     email: faker.internet.email(),
     contacts: JSON.stringify([
-      { type: "phone", email: faker.internet.email() },
+      { type: "email", email: faker.internet.email() },
       { type: "phone", value: faker.phone.number() },
     ]),
     createdAt: new Date().toISOString(),

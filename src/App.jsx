@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { getClients } from "../services/clientsService";
-import { Table, Container } from "react-bootstrap";
+import {
+  getClients,
+  deleteClient,
+  createClient,
+} from "../services/clientsService";
+import { Table, Container, Button, Modal } from "react-bootstrap";
+import extractDateTime from "../utility/extractDateTime";
+import ClientForm from "./components/CreationForm";
 
 function ClientList() {
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
+  const [show, setShow] = useState(false);
+
+  const fetchClients = async () => {
+    try {
+      const data = await getClients();
+      setClients(data);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to fetch clients");
+    }
+  };
 
   useEffect(() => {
-    const fetchClients = async () => {
-      try {
-        const data = await getClients();
-        setClients(data);
-      } catch (err) {
-        setError(err.response?.data?.message || "Failed to fetch clients");
-      }
-    };
-
     fetchClients();
   }, []);
 
@@ -23,7 +30,32 @@ function ClientList() {
     return <div>Error: {error}</div>;
   }
 
-  console.log(clients);
+  function handleClose() {
+    setShow(false);
+    fetchClients();
+  }
+  function handleShow() {
+    setShow(true);
+  }
+
+  function handleDelete(id) {
+    deleteClient(id)
+      .then(() => {
+        setClients((prevClients) =>
+          prevClients.filter((client) => client.id !== id)
+        );
+        console.log("Client successfully deleted");
+      })
+      .catch((err) => {
+        setError(err.response?.data?.message || "Failed to delete client");
+      });
+    fetchClients();
+    console.log("Client successfully deleted");
+  }
+
+  function handleCreate(data) {
+    createClient(data);
+  }
 
   return (
     <div>
@@ -32,8 +64,11 @@ function ClientList() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Name</th>
-              <th>Surname</th>
+              <th>Фамилия Имя Отчество</th>
+              <th>Дата и время создания</th>
+              <th>Последние изменения</th>
+              <th>Контакты</th>
+              <th>Действия</th>
             </tr>
           </thead>
           <tbody>
@@ -43,20 +78,39 @@ function ClientList() {
                 <td>{`${client.name} ${client.surname} ${
                   client.lastName || ""
                 }`}</td>
-                <td>{Date(client.createdAt)}</td>
+                <td>{`${extractDateTime(client.createdAt).date} ${
+                  extractDateTime(client.createdAt).time
+                }`}</td>
+                <td>{`${extractDateTime(client.updatedAt).date} ${
+                  extractDateTime(client.updatedAt).time
+                }`}</td>
+                <td>{client.contacts}</td>
+                <td className="d-inline-flex p-2">
+                  <Button variant="info">Изменить</Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(client.id)}
+                  >
+                    Удалить
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>
         </Table>
       </Container>
-      <h1>Client List</h1>
-      <ul>
-        {clients.map((client) => (
-          <li key={client.id}>
-            {client.name} {client.surname}
-          </li>
-        ))}
-      </ul>
+      <div className="d-flex justify-content-center">
+        <Button onClick={handleShow}>Добавить клиента</Button>
+
+        <Modal show={show} onHide={handleClose} size="lg">
+          <Modal.Header closeButton>
+            <Modal.Title>Добавление клиента</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ClientForm onClose={handleClose} />
+          </Modal.Body>
+        </Modal>
+      </div>
     </div>
   );
 }
