@@ -66,8 +66,11 @@ const ClientsTable = () => {
     fetchClients();
   }
 
-  function handleShow() {
+  function handleShow(id) {
     setShow(true);
+    return (
+        <ClientForm />
+    )
   }
 
   function handleDelete(id) {
@@ -91,6 +94,8 @@ const ClientsTable = () => {
   if (isLoading) return <Box minHeight="xl" sx={{ position: "relative"}}><CircularProgress sx={{ position: "absolute", left: "50%", top : "50vh"}} color="blue" /></Box>;
 
   return (
+    <>
+    <ClientForm />
     <Container sx={{ mt: 6 }} maxWidth="xl">
       <Typography variant="h4" component="h1" gutterBottom align="center">
         Список Клиентов
@@ -114,7 +119,7 @@ const ClientsTable = () => {
                 <TableCell sx={{ textAlign: "center"}}>{client.contacts}</TableCell>
                 <TableCell sx={{ textAlign: "center"}}>
                   {
-                    <Button>
+                    <Button onClick={() => handleShow()}>
                       <EditIcon />
                     </Button>
                   }
@@ -130,6 +135,8 @@ const ClientsTable = () => {
         </Table>
       </TableContainer>
     </Container>
+    <Button onClick={() => handleShow()}>Test</Button>
+    </>
   );
 };
 
