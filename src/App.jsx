@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import ClientsTable from "./components/Table"
+import ClientsTable from "./components/Table";
 import { Box } from "@mui/material";
 import { createClient } from "../services/clientsService";
-import {Modal, Button} from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import ClientForm from "./components/CreationForm";
 
 function ClientList() {
   // const [clients, setClients] = useState([]);
   // const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
-  
-  
+
   // const fetchClients = async () => {
   //   try {
   //     const data = await getClients();
@@ -36,27 +35,26 @@ function ClientList() {
     setShow(true);
   }
 
-
   function handleCreate(data) {
     createClient(data);
   }
 
   return (
     <div>
-    <ClientsTable />
-    <div className="d-flex justify-content-center">
-    <Button onClick={handleShow}>Добавить клиента</Button>
+      <ClientsTable />
+      <div className="d-flex justify-content-center">
+        <Button onClick={handleShow}>Добавить клиента</Button>
 
-    <Modal show={show} onHide={handleClose} size="lg">
-      <Modal.Header closeButton>
-        <Modal.Title>Добавление клиента</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <ClientForm onClose={handleClose} />
-      </Modal.Body>
-    </Modal>
-  </div>
-  </div>
+        <Modal show={show} onHide={handleClose} size="lg">
+          <Modal.Header closeButton>
+            <Modal.Title>Добавление клиента</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ClientForm onClose={handleClose} />
+          </Modal.Body>
+        </Modal>
+      </div>
+    </div>
   );
 }
 
