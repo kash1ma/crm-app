@@ -40,6 +40,9 @@ const ClientsTable = () => {
   const [clients, setClients] = useState([]);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
+  const [sortConfig, setSortConfig] = useState({
+    direction: "asc",
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchClients = async () => {
@@ -72,6 +75,8 @@ const ClientsTable = () => {
     setShow(true);
     return <ClientForm />;
   }
+
+  function handleSort(column) {}
 
   function handleDelete(id) {
     deleteClient(id)
