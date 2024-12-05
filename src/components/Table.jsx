@@ -71,7 +71,7 @@ const ClientsTable = () => {
     fetchClients();
   }
 
-  function handleShow(id) {
+  function handleShow() {
     setShow(true);
     return <ClientForm />;
   }
@@ -152,7 +152,7 @@ const ClientsTable = () => {
                       </Button>
                     }
                     {
-                      <Button>
+                      <Button onClick={() => handleDelete(client.id)}>
                         <DeleteIcon sx={{ color: "red" }} />
                       </Button>
                     }
@@ -163,7 +163,6 @@ const ClientsTable = () => {
           </Table>
         </TableContainer>
       </Container>
-      <Button onClick={() => handleShow()}>Test</Button>
     </>
   );
 };
