@@ -33,6 +33,7 @@ const ClientsTable = () => {
     { label: "Name", sortable: true },
     { label: "Email", sortable: false },
     { label: "Created At", sortable: true },
+    { label: "Contacts", sortable: false },
     { label: "Actions", sortable: false },
   ];
 
