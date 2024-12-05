@@ -63,8 +63,8 @@ export default function ClientForm({ onClose }) {
         <Form.Control
           type="text"
           placeholder="Введите фамилию"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          value={surname}
+          onChange={(e) => setSurname(e.target.value)}
           required
         />
       </Form.Group>
@@ -74,8 +74,8 @@ export default function ClientForm({ onClose }) {
         <Form.Control
           type="text"
           placeholder="Введите отчество"
-          value={surname}
-          onChange={(e) => setSurname(e.target.value)}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
         />
       </Form.Group>
 
