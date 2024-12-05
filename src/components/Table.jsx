@@ -31,8 +31,8 @@ const ClientsTable = () => {
   const headers = [
     { label: "ID", sortable: true },
     { label: "Name", sortable: true },
-    { label: "Email", sortable: false },
     { label: "Created At", sortable: true },
+    { label: "Updated At", sortable: true },
     { label: "Contacts", sortable: false },
     { label: "Actions", sortable: false },
   ];
@@ -143,7 +143,7 @@ const ClientsTable = () => {
                     extractDateTime(client.updatedAt).date
                   } ${extractDateTime(client.updatedAt).time}`}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {client.contacts}
+                    {JSON.parse(client.contacts).toString()}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {
