@@ -4,10 +4,13 @@ import {
   deleteClient,
   createClient,
 } from "../../services/clientsService";
+import sortByName from "../../utility/sortByName";
+import sortById from "../../utility/sortById";
+import sortByDate from "../../utility/sortByDate";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import extractDateTime from "../../utility/extractDateTime";
-import ClientForm from "./CreationForm"
+import ClientForm from "./CreationForm";
 import {
   Table,
   TableBody,
@@ -21,17 +24,16 @@ import {
   CircularProgress,
   Alert,
   Button,
-  Box
+  Box,
 } from "@mui/material";
 
 const ClientsTable = () => {
   const headers = [
-    "ID",
-    "Фамилия Имя Отчество",
-    "Дата и время создания",
-    "Последние изменения",
-    "Контакты",
-    "Действия",
+    { label: "ID", sortable: true },
+    { label: "Name", sortable: true },
+    { label: "Email", sortable: false },
+    { label: "Created At", sortable: true },
+    { label: "Actions", sortable: false },
   ];
 
   const [clients, setClients] = useState([]);
@@ -40,16 +42,15 @@ const ClientsTable = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchClients = async () => {
-      try {
-        setIsLoading(true)
+    try {
+      setIsLoading(true);
       const data = await getClients();
       setClients(data);
-      console.log(data)
+      console.log(data);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch clients");
     } finally {
-        setIsLoading(false)
-        
+      setIsLoading(false);
     }
   };
 
@@ -68,9 +69,7 @@ const ClientsTable = () => {
 
   function handleShow(id) {
     setShow(true);
-    return (
-        <ClientForm />
-    )
+    return <ClientForm />;
   }
 
   function handleDelete(id) {
@@ -88,54 +87,77 @@ const ClientsTable = () => {
     console.log("Client successfully deleted");
   }
 
-  function handleCreate(data) {
-    createClient(data);
-  }
-  if (isLoading) return <Box minHeight="xl" sx={{ position: "relative"}}><CircularProgress sx={{ position: "absolute", left: "50%", top : "50vh"}} color="blue" /></Box>;
+  if (isLoading)
+    return (
+      <Box minHeight="xl" sx={{ position: "relative" }}>
+        <CircularProgress
+          sx={{ position: "absolute", left: "50%", top: "50vh" }}
+          color="blue"
+        />
+      </Box>
+    );
 
   return (
     <>
-    <ClientForm />
-    <Container sx={{ mt: 6 }} maxWidth="xl">
-      <Typography variant="h4" component="h1" gutterBottom align="center">
-        Список Клиентов
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {headers.map((header, index) => (
-                <TableCell sx={{ textAlign: "center", bgcolor: "#212121", color: "#B0B0B0"}}  key={index}>{header}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {clients.map((client) => (
-              <TableRow key={client.id}>
-                <TableCell sx={{ textAlign: "center"}}>{client.id}</TableCell>
-                <TableCell sx={{ textAlign: "center"}}>{`${client.name} ${client.surname} ${client.lastName || ""}`}</TableCell>
-                <TableCell sx={{ textAlign: "center"}}>{`${extractDateTime(client.createdAt).date} ${extractDateTime(client.createdAt).time}`}</TableCell>
-                <TableCell sx={{ textAlign: "center"}}>{`${extractDateTime(client.updatedAt).date} ${extractDateTime(client.updatedAt).time}`}</TableCell>
-                <TableCell sx={{ textAlign: "center"}}>{client.contacts}</TableCell>
-                <TableCell sx={{ textAlign: "center"}}>
-                  {
-                    <Button onClick={() => handleShow()}>
-                      <EditIcon />
-                    </Button>
-                  }
-                  {
-                    <Button>
-                      <DeleteIcon sx={{ color: "red" }} />
-                    </Button>
-                  }
-                </TableCell>
+      <Container sx={{ mt: 6 }} maxWidth="xl">
+        <Typography variant="h2" component="h1" gutterBottom align="left">
+          Клиенты
+        </Typography>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                {headers.map((header, index) => (
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      bgcolor: "#212121",
+                      color: "#B0B0B0",
+                    }}
+                    key={index}
+                  >
+                    {header.label}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Container>
-    <Button onClick={() => handleShow()}>Test</Button>
+            </TableHead>
+            <TableBody>
+              {clients.map((client) => (
+                <TableRow key={client.id}>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {client.id}
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{`${client.name} ${
+                    client.surname
+                  } ${client.lastName || ""}`}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{`${
+                    extractDateTime(client.createdAt).date
+                  } ${extractDateTime(client.createdAt).time}`}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{`${
+                    extractDateTime(client.updatedAt).date
+                  } ${extractDateTime(client.updatedAt).time}`}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {client.contacts}
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {
+                      <Button onClick={() => handleShow()}>
+                        <EditIcon />
+                      </Button>
+                    }
+                    {
+                      <Button>
+                        <DeleteIcon sx={{ color: "red" }} />
+                      </Button>
+                    }
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+      <Button onClick={() => handleShow()}>Test</Button>
     </>
   );
 };
