@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import logo from '../assets/logo.webp'
+import logo from "../assets/logo.webp";
 
 function Header() {
   return (
@@ -11,10 +11,10 @@ function Header() {
       <Toolbar>
         <Box sx={{ display: "flex", alignItems: "center", width: "50%" }}>
           <Box sx={{ mr: 5 }}>
-            <img 
+            <img
               src={logo}
-              alt="icon" 
-              style={{ height: "40px", width: "40px" }} 
+              alt="icon"
+              style={{ height: "40px", width: "40px" }}
             />
           </Box>
           <TextField

@@ -40,7 +40,7 @@ function ClientList() {
   }
 
   return (
-    <div>
+    <div sx={{ bgcolor: "#141414" }}>
       <Header />
 
       <ClientsTable />

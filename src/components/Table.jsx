@@ -106,7 +106,13 @@ const ClientsTable = () => {
   return (
     <>
       <Container sx={{ mt: 6 }} maxWidth="xl">
-        <Typography variant="h2" component="h1" gutterBottom align="left">
+        <Typography
+          variant="h2"
+          component="h1"
+          paddingTop={"30px"}
+          gutterBottom
+          align="left"
+        >
           Клиенты
         </Typography>
         <TableContainer component={Paper}>
@@ -117,7 +123,7 @@ const ClientsTable = () => {
                   <TableCell
                     sx={{
                       textAlign: "center",
-                      bgcolor: "#212121",
+                      bgcolor: "#292929",
                       color: "#B0B0B0",
                     }}
                     key={index}
@@ -129,7 +135,14 @@ const ClientsTable = () => {
             </TableHead>
             <TableBody>
               {clients.map((client) => (
-                <TableRow key={client.id}>
+                <TableRow
+                  key={client.id}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#282828",
+                    },
+                  }}
+                >
                   <TableCell sx={{ textAlign: "center" }}>
                     {client.id}
                   </TableCell>
