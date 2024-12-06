@@ -26,6 +26,7 @@ import {
   Button,
   Box,
 } from "@mui/material";
+import { Modal } from "react-bootstrap";
 
 const ClientsTable = () => {
   const headers = [
@@ -176,6 +177,18 @@ const ClientsTable = () => {
           </Table>
         </TableContainer>
       </Container>
+      <div className="d-flex justify-content-center">
+        <Button onClick={handleShow}>Добавить клиента</Button>
+
+        <Modal show={show} onHide={handleClose} size="lg">
+          <Modal.Header closeButton>
+            <Modal.Title>Добавление клиента</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ClientForm onClose={handleClose} />
+          </Modal.Body>
+        </Modal>
+      </div>
     </>
   );
 };

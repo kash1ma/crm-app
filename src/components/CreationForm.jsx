@@ -1,10 +1,21 @@
 import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import {
+  Button,
+  TextField,
+  Box,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import { createClient } from "../../services/clientsService";
+import { Delete } from "@mui/icons-material";
 
 export default function ClientForm({ onClose }) {
   const [contacts, setContacts] = useState([{ type: "phone", value: "" }]);
-  const [name, setname] = useState("");
+  const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [surname, setSurname] = useState("");
 
@@ -46,85 +57,99 @@ export default function ClientForm({ onClose }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3">
-        <Form.Label>Имя</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Введите имя"
-          value={name}
-          onChange={(e) => setname(e.target.value)}
-          required
-        />
-      </Form.Group>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+    >
+      <Typography variant="h6">Клиентская форма</Typography>
 
-      <Form.Group className="mb-3">
-        <Form.Label>Фамилия</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Введите фамилию"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-      </Form.Group>
+      <TextField
+        label="Имя"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Введите имя"
+        required
+        fullWidth
+      />
 
-      <Form.Group className="mb-3">
-        <Form.Label>Отчество</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Введите отчество"
-          value={surname}
-          onChange={(e) => setSurname(e.target.value)}
-        />
-      </Form.Group>
+      <TextField
+        label="Фамилия"
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+        placeholder="Введите фамилию"
+        required
+        fullWidth
+      />
 
-      <Form.Label>Контакты</Form.Label>
+      <TextField
+        label="Отчество"
+        value={surname}
+        onChange={(e) => setSurname(e.target.value)}
+        placeholder="Введите отчество"
+        fullWidth
+      />
+
+      <Typography>Контакты</Typography>
       {contacts.map((contact, index) => (
-        <div key={index} className="mb-3 d-flex align-items-center">
-          <Form.Select
-            className="me-2"
-            value={contact.type}
-            onChange={(e) => handleContactChange(index, "type", e.target.value)}
-          >
-            <option value="phone">Телефон</option>
-            <option value="Email">Емейл</option>
-            <option value="Facebook">Фейсбук</option>
-            <option value="VK">ВК</option>
-            <option value="Другое">Другое</option>
-          </Form.Select>
-          <Form.Control
-            type="text"
-            placeholder="Введите контакт"
+        <Box
+          key={index}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <FormControl fullWidth>
+            <InputLabel>Тип контакта</InputLabel>
+            <Select
+              value={contact.type}
+              onChange={(e) =>
+                handleContactChange(index, "type", e.target.value)
+              }
+            >
+              <MenuItem value="phone">Телефон</MenuItem>
+              <MenuItem value="Email">Емейл</MenuItem>
+              <MenuItem value="Facebook">Фейсбук</MenuItem>
+              <MenuItem value="VK">ВК</MenuItem>
+              <MenuItem value="Другое">Другое</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
             value={contact.value}
             onChange={(e) =>
               handleContactChange(index, "value", e.target.value)
             }
+            placeholder="Введите контакт"
             required
+            fullWidth
           />
-          <Button
-            variant="danger"
-            className="ms-2"
+
+          <IconButton
+            color="error"
             onClick={() => handleRemoveContact(index)}
+            size="large"
           >
-            Удалить
-          </Button>
-        </div>
+            <Delete />
+          </IconButton>
+        </Box>
       ))}
+
       {contacts.length < 10 && (
-        <Button variant="secondary" onClick={handleAddContact}>
+        <Button variant="outlined" onClick={handleAddContact}>
           Добавить контакт
         </Button>
       )}
 
-      <div className="mt-4">
-        <Button variant="primary" type="submit">
+      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}>
+        <Button variant="contained" color="primary" type="submit">
           Сохранить
         </Button>
-        <Button variant="secondary" onClick={onClose} className="ms-2">
+        <Button variant="outlined" onClick={onClose}>
           Отмена
         </Button>
-      </div>
-    </Form>
+      </Box>
+    </Box>
   );
 }

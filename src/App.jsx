@@ -5,30 +5,33 @@ import { createClient } from "../services/clientsService";
 import { Modal, Button } from "react-bootstrap";
 import ClientForm from "./components/CreationForm";
 import Header from "./components/Header";
+import { getClients } from "../services/clientsService";
 
 function ClientList() {
-  // const [clients, setClients] = useState([]);
-  // const [error, setError] = useState(null);
+  const [clients, setClients] = useState([]);
+  const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
 
-  //const fetchClients = async () => {
-  //    try {
-  //      const data = await getClients();
-  //      setClients(data);
-  //    } catch (err) {
-  //      setError(err.response?.data?.message || "Failed to fetch clients");
-  //    }
-  //  };
-  //
-  //  useEffect(() => {
-  //    fetchClients();
-  // }, []);
-  // if (error) {
-  //    return <div>Error: {error}</div>;
-  //  }
-  //
+  const fetchClients = async () => {
+    try {
+      const data = await getClients();
+      setClients(data);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to fetch clients");
+    }
+  };
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   function handleClose() {
     setShow(false);
+    fetchClients();
   }
 
   function handleShow() {
@@ -44,18 +47,6 @@ function ClientList() {
       <Header />
 
       <ClientsTable />
-      <div className="d-flex justify-content-center">
-        <Button onClick={handleShow}>Добавить клиента</Button>
-
-        <Modal show={show} onHide={handleClose} size="lg">
-          <Modal.Header closeButton>
-            <Modal.Title>Добавление клиента</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <ClientForm onClose={handleClose} />
-          </Modal.Body>
-        </Modal>
-      </div>
     </div>
   );
 }
