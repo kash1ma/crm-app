@@ -27,6 +27,7 @@ import {
   Box,
 } from "@mui/material";
 import { Modal } from "react-bootstrap";
+import { Margin } from "@mui/icons-material";
 
 const ClientsTable = () => {
   const headers = [
@@ -110,7 +111,7 @@ const ClientsTable = () => {
         <Typography
           variant="h2"
           component="h1"
-          paddingTop={"30px"}
+          paddingTop={"2rem"}
           gutterBottom
           align="left"
         >
@@ -180,7 +181,12 @@ const ClientsTable = () => {
       <div className="d-flex justify-content-center">
         <Button onClick={handleShow}>Добавить клиента</Button>
 
-        <Modal show={show} onHide={handleClose} size="lg">
+        <Modal
+          show={show}
+          onHide={handleClose}
+          size="lg"
+          sx={{ Margin: "40vh" }}
+        >
           <Modal.Header closeButton>
             <Modal.Title>Добавление клиента</Modal.Title>
           </Modal.Header>

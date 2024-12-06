@@ -60,7 +60,11 @@ export default function ClientForm({ onClose }) {
     <Box
       component="form"
       onSubmit={handleSubmit}
-      sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
     >
       <Typography variant="h6">Клиентская форма</Typography>
 
