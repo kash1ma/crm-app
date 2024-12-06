@@ -25,9 +25,23 @@ import {
   Alert,
   Button,
   Box,
+  Modal
 } from "@mui/material";
-import { Modal } from "react-bootstrap";
+
 import { Margin } from "@mui/icons-material";
+
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800, // эквивалент size="lg"
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 2,
+};
 
 const ClientsTable = () => {
   const headers = [
@@ -178,23 +192,25 @@ const ClientsTable = () => {
           </Table>
         </TableContainer>
       </Container>
-      <div className="d-flex justify-content-center">
-        <Button onClick={handleShow}>Добавить клиента</Button>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Button variant="contained" onClick={handleShow}>
+          Добавить клиента
+        </Button>
 
-        <Modal
-          show={show}
-          onHide={handleClose}
-          size="lg"
-          sx={{ Margin: "40vh" }}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Добавление клиента</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        <Modal open={show} onClose={handleClose} aria-labelledby="modal-title">
+          <Box sx={style}>
+            <Typography
+              id="modal-title"
+              variant="h6"
+              component="h2"
+              sx={{ mb: 2 }}
+            >
+              Добавление клиента
+            </Typography>
             <ClientForm onClose={handleClose} />
-          </Modal.Body>
+          </Box>
         </Modal>
-      </div>
+      </Box>
     </>
   );
 };
