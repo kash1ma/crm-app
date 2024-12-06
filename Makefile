@@ -13,6 +13,6 @@ frontend:
 clear:
 	node backendUtils/clearDb.js
 reset:
-	make clear && make seed && make server
+	make clear && make seed && make start
 test:
 	npm run test
