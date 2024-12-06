@@ -11,22 +11,22 @@ function ClientList() {
   // const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
 
- const fetchClients = async () => {
-     try {
-       const data = await getClients();
-       setClients(data);
-     } catch (err) {
-       setError(err.response?.data?.message || "Failed to fetch clients");
-     }
-   };
-
-   useEffect(() => {
-     fetchClients();
-  }, []);
-  if (error) {
-     return <div>Error: {error}</div>;
-   }
-
+  //const fetchClients = async () => {
+  //    try {
+  //      const data = await getClients();
+  //      setClients(data);
+  //    } catch (err) {
+  //      setError(err.response?.data?.message || "Failed to fetch clients");
+  //    }
+  //  };
+  //
+  //  useEffect(() => {
+  //    fetchClients();
+  // }, []);
+  // if (error) {
+  //    return <div>Error: {error}</div>;
+  //  }
+  //
   function handleClose() {
     setShow(false);
   }
@@ -41,7 +41,7 @@ function ClientList() {
 
   return (
     <div>
-      <Header/>
+      <Header />
 
       <ClientsTable />
       <div className="d-flex justify-content-center">
