@@ -25,22 +25,20 @@ import {
   Alert,
   Button,
   Box,
-  Modal
+  Modal,
 } from "@mui/material";
+
+import CloseIcon from "@mui/icons-material/Close";
 
 import { Margin } from "@mui/icons-material";
 
-
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 800, // эквивалент size="lg"
-  bgcolor: 'background.paper',
+  margin: "0 auto",
+  marginTop: 15,
+  width: 550, // эквивалент size="lg"
+  bgcolor: "#1B1B1B",
   boxShadow: 24,
-  p: 4,
-  borderRadius: 2,
+  borderRadius: "10px 10px 40px 40px",
 };
 
 const ClientsTable = () => {
@@ -197,16 +195,37 @@ const ClientsTable = () => {
           Добавить клиента
         </Button>
 
-        <Modal open={show} onClose={handleClose} aria-labelledby="modal-title">
+        <Modal
+          open={show}
+          onClose={handleClose}
+          aria-labelledby="modal-title"
+          sx={{ overflow: "scroll" }}
+        >
           <Box sx={style}>
             <Typography
               id="modal-title"
               variant="h6"
               component="h2"
-              sx={{ mb: 2 }}
+              sx={{ padding: "3rem 0 0 2rem", fontSize: 35, color: "white" }}
             >
-              Добавление клиента
+              Добавить клиента
             </Typography>
+            <Button
+              onClick={handleClose}
+              sx={{
+                position: "relative",
+                top: -70,
+                left: 477,
+                color: "white",
+              }}
+            >
+              <CloseIcon
+                sx={{
+                  height: "3rem",
+                  width: "3rem",
+                }}
+              ></CloseIcon>
+            </Button>
             <ClientForm onClose={handleClose} />
           </Box>
         </Modal>
