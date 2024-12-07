@@ -30,6 +30,8 @@ import {
 
 import CloseIcon from "@mui/icons-material/Close";
 
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+
 import { Margin } from "@mui/icons-material";
 
 const style = {
@@ -191,8 +193,8 @@ const ClientsTable = () => {
         </TableContainer>
       </Container>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Button variant="contained" onClick={handleShow}>
-          Добавить клиента
+        <Button variant="contained" onClick={handleShow} sx={{marginTop:'2rem', background:'white',border: '1px solid #6D92D6', height:'44px', width:'216px', color:'#6D92D6',display:'flex',justifyContent:'center',alignItems:'center', gap: 0.5}}>
+          <PersonAddAlt1Icon sx={{marginTop:'-0.3rem'}}></PersonAddAlt1Icon>Добавить клиента
         </Button>
 
         <Modal
