@@ -32,10 +32,6 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-
 import { Margin } from "@mui/icons-material";
 import UpdateForm from "./UpdateForm";
 
@@ -285,20 +281,6 @@ const ClientsTable = () => {
               ></CloseIcon>
             </Button>
             <ClientForm onClose={handleClose} />
-          </Box>
-        </Modal>
-      </Box>{" "}
-      */}
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Modal
-          open={show}
-          onClose={handleCloseUpdate}
-          aria-labelledby="modal-title"
-        >
-          <Box sx={style}>
-            {clientUpdate && (
-              <UpdateForm onClose={handleCloseUpdate} client={clientUpdate} />
-            )}
           </Box>
         </Modal>
       </Box>
