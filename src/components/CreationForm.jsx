@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { createClient } from "../../services/clientsService";
 import {
   Button,
   TextField,
@@ -88,8 +87,8 @@ export default function ClientForm({ onClose }) {
       >
         <TextField
           sx={style}
-          label="Фамилия"
-          value={lastName}
+          label="Имя"
+          value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Введите имя"
           required
@@ -98,8 +97,8 @@ export default function ClientForm({ onClose }) {
 
         <TextField
           sx={style}
-          label="Имя"
-          value={name}
+          label="Фамилия"
+          value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           placeholder="Введите фамилию"
           required
@@ -110,7 +109,7 @@ export default function ClientForm({ onClose }) {
           sx={style}
           label="Отчество"
           value={surname}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setSurname(e.target.value)}
           placeholder="Введите Отчество"
           fullWidth
         />
