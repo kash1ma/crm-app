@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   getClients,
   deleteClient,
@@ -11,6 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import extractDateTime from "../../utility/extractDateTime";
 import ClientForm from "./CreationForm";
+import UpdateForm from "./UpdateForm";
 import {
   Table,
   TableBody,
@@ -26,13 +27,16 @@ import {
   Button,
   Box,
   Modal,
+  Modal,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 
-import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
-import { Margin } from "@mui/icons-material";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+
+import { Margin, Update } from "@mui/icons-material";
 
 const style = {
   margin: "0 auto",
@@ -54,6 +58,7 @@ const ClientsTable = () => {
   ];
 
   const [clients, setClients] = useState([]);
+  const [clientUpdate, setClientUpdate] = useState(null);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
   const [sortConfig, setSortConfig] = useState({
@@ -82,14 +87,23 @@ const ClientsTable = () => {
     return <div>Error: {error}</div>;
   }
 
-  function handleClose() {
+  function handleShowUpdate() {
+    setShow(true);
+  }
+
+  function handleCloseUpdate() {
     setShow(false);
     fetchClients();
   }
 
-  function handleShow() {
+  const handleShow = (client) => {
+    setClientUpdate(client); // Set the client to be updated
     setShow(true);
-    return <ClientForm />;
+  };
+
+  function handleClose() {
+    setShow(false);
+    fetchClients();
   }
 
   function handleSort(column) {}
@@ -176,7 +190,7 @@ const ClientsTable = () => {
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {
-                      <Button onClick={() => handleShow()}>
+                      <Button onClick={() => handleShow(client)}>
                         <EditIcon />
                       </Button>
                     }
@@ -193,8 +207,24 @@ const ClientsTable = () => {
         </TableContainer>
       </Container>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Button variant="contained" onClick={handleShow} sx={{marginTop:'2rem', background:'white',border: '1px solid #6D92D6', height:'44px', width:'216px', color:'#6D92D6',display:'flex',justifyContent:'center',alignItems:'center', gap: 0.5}}>
-          <PersonAddAlt1Icon sx={{marginTop:'-0.3rem'}}></PersonAddAlt1Icon>Добавить клиента
+        <Button
+          variant="contained"
+          onClick={handleShow}
+          sx={{
+            marginTop: "2rem",
+            background: "white",
+            border: "1px solid #6D92D6",
+            height: "44px",
+            width: "216px",
+            color: "#6D92D6",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 0.5,
+          }}
+        >
+          <PersonAddAlt1Icon sx={{ marginTop: "-0.3rem" }}></PersonAddAlt1Icon>
+          Добавить клиента
         </Button>
 
         <Modal
@@ -231,7 +261,22 @@ const ClientsTable = () => {
             <ClientForm onClose={handleClose} />
           </Box>
         </Modal>
+      </Box>{" "}
+      */}
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Modal
+          open={show}
+          onClose={handleCloseUpdate}
+          aria-labelledby="modal-title"
+        >
+          <Box sx={style}>
+            {clientUpdate && (
+              <UpdateForm onClose={handleCloseUpdate} client={clientUpdate} />
+            )}
+          </Box>
+        </Modal>
       </Box>
+      ;
     </>
   );
 };
