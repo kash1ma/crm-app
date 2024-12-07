@@ -245,7 +245,23 @@ const ClientsTable = () => {
             <UpdateForm onClose={handleCloseEdit} client={updatedClient} />
           </Box>
         </Modal>
-        <Button variant="contained" onClick={handleShow}>
+        <Button
+          variant="contained"
+          onClick={handleShow}
+          sx={{
+            marginTop: "2rem",
+            background: "white",
+            border: "1px solid #6D92D6",
+            height: "44px",
+            width: "216px",
+            color: "#6D92D6",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 0.5,
+          }}
+        >
+          <PersonAddAlt1Icon sx={{ marginTop: "-0.3rem" }}></PersonAddAlt1Icon>
           Добавить клиента
         </Button>
 
