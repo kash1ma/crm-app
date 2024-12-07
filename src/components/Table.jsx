@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   getClients,
   deleteClient,
@@ -11,7 +11,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import extractDateTime from "../../utility/extractDateTime";
 import ClientForm from "./CreationForm";
-import UpdateForm from "./UpdateForm";
 import {
   Table,
   TableBody,
@@ -27,7 +26,6 @@ import {
   Button,
   Box,
   Modal,
-  Modal,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -36,7 +34,10 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
-import { Margin, Update } from "@mui/icons-material";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+
+import { Margin } from "@mui/icons-material";
+import UpdateForm from "./UpdateForm";
 
 const style = {
   margin: "0 auto",
@@ -58,9 +59,10 @@ const ClientsTable = () => {
   ];
 
   const [clients, setClients] = useState([]);
-  const [clientUpdate, setClientUpdate] = useState(null);
+  const [updatedClient, setUpdatedClient] = useState([]);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [sortConfig, setSortConfig] = useState({
     direction: "asc",
   });
@@ -87,22 +89,24 @@ const ClientsTable = () => {
     return <div>Error: {error}</div>;
   }
 
-  function handleShowUpdate() {
-    setShow(true);
-  }
-
-  function handleCloseUpdate() {
+  function handleClose() {
     setShow(false);
     fetchClients();
   }
 
-  const handleShow = (client) => {
-    setClientUpdate(client); // Set the client to be updated
+  function handleShow() {
     setShow(true);
+    return <ClientForm />;
+  }
+
+  const handleEdit = (client) => {
+    setUpdatedClient(client);
+    setShowEdit(true);
+    return <UpdateForm onClose={handleCloseEdit} client={client} />;
   };
 
-  function handleClose() {
-    setShow(false);
+  function handleCloseEdit() {
+    setShowEdit(false);
     fetchClients();
   }
 
@@ -190,7 +194,7 @@ const ClientsTable = () => {
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     {
-                      <Button onClick={() => handleShow(client)}>
+                      <Button onClick={() => handleEdit(client)}>
                         <EditIcon />
                       </Button>
                     }
@@ -207,23 +211,45 @@ const ClientsTable = () => {
         </TableContainer>
       </Container>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          variant="contained"
-          onClick={handleShow}
-          sx={{
-            marginTop: "2rem",
-            background: "white",
-            border: "1px solid #6D92D6",
-            height: "44px",
-            width: "216px",
-            color: "#6D92D6",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 0.5,
-          }}
+        <Modal
+          open={showEdit}
+          onClose={handleCloseEdit}
+          aria-labelledby="modal-title"
+          sx={{ overflow: "scroll" }}
         >
-          <PersonAddAlt1Icon sx={{ marginTop: "-0.3rem" }}></PersonAddAlt1Icon>
+          <Box sx={style}>
+            <Typography
+              id="modal-title"
+              variant="h6"
+              component="h2"
+              sx={{
+                padding: "3rem 0 0 2rem",
+                fontSize: 35,
+                color: "white",
+              }}
+            >
+              Обновить данные
+            </Typography>
+            <Button
+              onClick={handleCloseEdit}
+              sx={{
+                position: "relative",
+                top: -70,
+                left: 477,
+                color: "white",
+              }}
+            >
+              <CloseIcon
+                sx={{
+                  height: "3rem",
+                  width: "3rem",
+                }}
+              ></CloseIcon>
+            </Button>
+            <UpdateForm onClose={handleCloseEdit} client={updatedClient} />
+          </Box>
+        </Modal>
+        <Button variant="contained" onClick={handleShow}>
           Добавить клиента
         </Button>
 
@@ -276,7 +302,6 @@ const ClientsTable = () => {
           </Box>
         </Modal>
       </Box>
-      ;
     </>
   );
 };
