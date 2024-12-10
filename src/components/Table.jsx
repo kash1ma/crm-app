@@ -278,7 +278,7 @@ const ClientsTable = () => {
               component="h2"
               sx={{ padding: "3rem 0 0 2rem", fontSize: 35, color: "white" }}
             >
-              Добавить клиента
+              Новый пользователь
             </Typography>
             <Button
               onClick={handleClose}

@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { createClient } from "../../services/clientsService";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function ClientForm({ onClose }) {
   const [contacts, setContacts] = useState([{ type: "phone", value: "" }]);
@@ -139,6 +140,9 @@ export default function ClientForm({ onClose }) {
                   background: "#C5C5C5",
                   fontWeight: 10,
                   borderRadius: "0.3rem 0 0 0.3rem",
+                  "&:hover": {
+                    background: "#C5C5C5", // Keep the background color the same on hover
+                  },
                 }}
                 value={contact.type}
                 onChange={(e) =>
@@ -157,7 +161,6 @@ export default function ClientForm({ onClose }) {
               sx={{
                 width: 1000,
                 background: "#292929",
-
                 "& .MuiInputBase-input": {
                   color: "#CBCBCB",
                 },
@@ -169,8 +172,7 @@ export default function ClientForm({ onClose }) {
                     borderColor: "#434343",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#CBCBCB",
-                    borderLeft: "none",
+                    borderColor: "#434343", // Keep the border color the same on hover
                     borderLeft: "none",
                     borderRadius: "0px",
                   },
@@ -189,6 +191,27 @@ export default function ClientForm({ onClose }) {
               required
               fullWidth
             />
+            <IconButton
+              onClick={() => handleRemoveContact(index)}
+              sx={{
+                width: 50,
+                height: 50,
+                background: "#141414",
+                marginLeft: 1,
+                marginTop: 0.5,
+                "&:hover": {
+                  background: "#141414", // Keep the same background color on hover
+                },
+              }}
+            >
+              <CloseIcon
+                sx={{
+                  width: 1,
+                  height: 1,
+                  color: "white",
+                }}
+              />
+            </IconButton>
           </Box>
         </Box>
       ))}
