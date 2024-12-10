@@ -11,6 +11,8 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 import { Delete } from "@mui/icons-material";
 
 export default function UpdateForm({ onClose, client }) {
@@ -56,19 +58,52 @@ export default function UpdateForm({ onClose, client }) {
     }
   };
 
+  const style = {
+    background: "#292929",
+    borderRadius: 4,
+    "& .MuiInputBase-input": {
+      color: "#CBCBCB",
+    },
+    "& .MuiInputLabel-root": {
+      color: "#CBCBCB",
+    },
+  };
+
+  const getPlaceholderText = (type) => {
+    switch (type) {
+      case "phone":
+        return "Введите номер телефона";
+      case "Email":
+        return "Введите адрес электронной почты";
+      case "Facebook":
+        return "Введите ссылку на профиль";
+      case "VK":
+        return "Введите ссылку на профиль";
+      case "Другое":
+        return "Введите контактную информацию";
+      default:
+        return "Введите контакт";
+    }
+  };
+
   return (
     <Box
       component="form"
       onSubmit={handleSubmit}
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
+        padding: "0 0 2.5rem 0",
       }}
     >
-      <Typography variant="h6">Изменить данные клиента</Typography>
-
+<Box
+        sx={{
+          p: "0 2rem 2rem 2rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: 4,
+        }}
+      >
       <TextField
+      sx={style}
         label="Имя"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -78,6 +113,7 @@ export default function UpdateForm({ onClose, client }) {
       />
 
       <TextField
+      sx={style}
         label="Фамилия"
         value={lastName}
         onChange={(e) => setLastName(e.target.value)}
@@ -87,31 +123,46 @@ export default function UpdateForm({ onClose, client }) {
       />
 
       <TextField
+      sx={style}
         label="Отчество"
         value={surname}
         onChange={(e) => setSurname(e.target.value)}
         placeholder="Введите отчество"
         fullWidth
       />
-
-      <Typography>Контакты</Typography>
+</Box>
       {contacts.map((contact, index) => (
         <Box
           key={index}
           sx={{
+            width: "100%", // Set the width to 100% to stretch across the modal
+            backgroundColor: "#292929",
+            padding: 0,
             display: "flex",
-            alignItems: "center",
-            gap: 2,
+            flexDirection: "column",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              padding: "1rem",
+            }}
+          >
           <FormControl fullWidth>
-            <InputLabel>Тип контакта</InputLabel>
-            <Select
-              value={contact.type}
-              onChange={(e) =>
-                handleContactChange(index, "type", e.target.value)
-              }
-            >
+          <Select
+                sx={{
+                  background: "#C5C5C5",
+                  fontWeight: 10,
+                  borderRadius: "0.3rem 0 0 0.3rem",
+                  "&:hover": {
+                    background: "#C5C5C5", // Keep the background color the same on hover
+                  },
+                }}
+                value={contact.type}
+                onChange={(e) =>
+                  handleContactChange(index, "type", e.target.value)
+                }
+              >
               <MenuItem value="phone">Телефон</MenuItem>
               <MenuItem value="Email">Емейл</MenuItem>
               <MenuItem value="Facebook">Фейсбук</MenuItem>
@@ -121,37 +172,106 @@ export default function UpdateForm({ onClose, client }) {
           </FormControl>
 
           <TextField
+          sx={{
+            width: 1000,
+            background: "#292929",
+            "& .MuiInputBase-input": {
+              color: "#CBCBCB",
+            },
+            "& .MuiInputLabel-root": {
+              color: "#CBCBCB",
+            },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#434343",
+              },
+              "&:hover fieldset": {
+                borderColor: "#434343", // Keep the border color the same on hover
+                borderLeft: "none",
+                borderRadius: "0px",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#CBCBCB",
+                borderLeft: "none",
+                borderRadius: "0px",
+              },
+            },
+          }}
             value={contact.value}
             onChange={(e) =>
               handleContactChange(index, "value", e.target.value)
             }
-            placeholder="Введите контакт"
+            placeholder={getPlaceholderText(contact.type)}
             required
             fullWidth
           />
 
-          <IconButton
-            color="error"
-            onClick={() => handleRemoveContact(index)}
-            size="large"
-          >
-            <Delete />
+<IconButton
+              onClick={() => handleRemoveContact(index)}
+              sx={{
+                width: 50,
+                height: 50,
+                background: "#141414",
+                marginLeft: 1,
+                marginTop: 0.5,
+                "&:hover": {
+                  background: "#141414", // Keep the same background color on hover
+                },
+              }}
+            >
+            <CloseIcon
+                sx={{
+                  width: 1,
+                  height: 1,
+                  color: "white",
+                }}
+              />
           </IconButton>
+          </Box>
         </Box>
       ))}
 
       {contacts.length < 10 && (
-        <Button variant="outlined" onClick={handleAddContact}>
+        <Box
+        sx={{
+          width: "100%",
+          height: 50,
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: "#292929",
+        }}
+      >
+        <Button
+          variant="outlined"
+          onClick={handleAddContact}
+          sx={{
+            border: "none",
+            color: "white",
+          }}
+        >
+          <AddCircleOutlineOutlinedIcon
+            sx={{ color: "aqua", marginBottom: 0.2, marginRight: 0.5 }}
+          ></AddCircleOutlineOutlinedIcon>{" "}
           Добавить контакт
         </Button>
+      </Box>
       )}
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 3 }}>
-        <Button variant="contained" color="primary" type="submit">
+<Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{
+            margin: "0 auto",
+            padding: 2,
+            marginTop: 3,
+            width: 200,
+            borderRadius: 5,
+            background: "#555555",
+            fontWeight: 300,
+          }}
+        >
           Сохранить
-        </Button>
-        <Button variant="outlined" onClick={onClose}>
-          Отмена
         </Button>
       </Box>
     </Box>
