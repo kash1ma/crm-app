@@ -6,7 +6,7 @@ import { Modal, Button } from "react-bootstrap";
 import ClientForm from "./components/CreationForm";
 import Header from "./components/Header";
 import { getClients } from "../services/clientsService";
-import './app.css'
+import './App.css'
 
 function ClientList() {
   const [clients, setClients] = useState([]);
