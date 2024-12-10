@@ -94,7 +94,7 @@ export default function UpdateForm({ onClose, client }) {
         padding: "0 0 2.5rem 0",
       }}
     >
-<Box
+      <Box
         sx={{
           p: "0 2rem 2rem 2rem",
           display: "flex",
@@ -102,35 +102,35 @@ export default function UpdateForm({ onClose, client }) {
           gap: 4,
         }}
       >
-      <TextField
-      sx={style}
-        label="Имя"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Введите имя"
-        required
-        fullWidth
-      />
+        <TextField
+          sx={style}
+          label="Имя"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Введите имя"
+          required
+          fullWidth
+        />
 
-      <TextField
-      sx={style}
-        label="Фамилия"
-        value={lastName}
-        onChange={(e) => setLastName(e.target.value)}
-        placeholder="Введите фамилию"
-        required
-        fullWidth
-      />
+        <TextField
+          sx={style}
+          label="Фамилия"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder="Введите фамилию"
+          required
+          fullWidth
+        />
 
-      <TextField
-      sx={style}
-        label="Отчество"
-        value={surname}
-        onChange={(e) => setSurname(e.target.value)}
-        placeholder="Введите отчество"
-        fullWidth
-      />
-</Box>
+        <TextField
+          sx={style}
+          label="Отчество"
+          value={surname}
+          onChange={(e) => setSurname(e.target.value)}
+          placeholder="Введите отчество"
+          fullWidth
+        />
+      </Box>
       {contacts.map((contact, index) => (
         <Box
           key={index}
@@ -148,8 +148,8 @@ export default function UpdateForm({ onClose, client }) {
               padding: "1rem",
             }}
           >
-          <FormControl fullWidth>
-          <Select
+            <FormControl fullWidth>
+              <Select
                 sx={{
                   background: "#C5C5C5",
                   fontWeight: 10,
@@ -163,50 +163,50 @@ export default function UpdateForm({ onClose, client }) {
                   handleContactChange(index, "type", e.target.value)
                 }
               >
-              <MenuItem value="phone">Телефон</MenuItem>
-              <MenuItem value="Email">Емейл</MenuItem>
-              <MenuItem value="Facebook">Фейсбук</MenuItem>
-              <MenuItem value="VK">ВК</MenuItem>
-              <MenuItem value="Другое">Другое</MenuItem>
-            </Select>
-          </FormControl>
+                <MenuItem value="phone">Телефон</MenuItem>
+                <MenuItem value="Email">Емейл</MenuItem>
+                <MenuItem value="Facebook">Фейсбук</MenuItem>
+                <MenuItem value="VK">ВК</MenuItem>
+                <MenuItem value="Другое">Другое</MenuItem>
+              </Select>
+            </FormControl>
 
-          <TextField
-          sx={{
-            width: 1000,
-            background: "#292929",
-            "& .MuiInputBase-input": {
-              color: "#CBCBCB",
-            },
-            "& .MuiInputLabel-root": {
-              color: "#CBCBCB",
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#434343",
-              },
-              "&:hover fieldset": {
-                borderColor: "#434343", // Keep the border color the same on hover
-                borderLeft: "none",
-                borderRadius: "0px",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#CBCBCB",
-                borderLeft: "none",
-                borderRadius: "0px",
-              },
-            },
-          }}
-            value={contact.value}
-            onChange={(e) =>
-              handleContactChange(index, "value", e.target.value)
-            }
-            placeholder={getPlaceholderText(contact.type)}
-            required
-            fullWidth
-          />
+            <TextField
+              sx={{
+                width: 1000,
+                background: "#292929",
+                "& .MuiInputBase-input": {
+                  color: "#CBCBCB",
+                },
+                "& .MuiInputLabel-root": {
+                  color: "#CBCBCB",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "#434343",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#434343", // Keep the border color the same on hover
+                    borderLeft: "none",
+                    borderRadius: "0px",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#CBCBCB",
+                    borderLeft: "none",
+                    borderRadius: "0px",
+                  },
+                },
+              }}
+              value={contact.value}
+              onChange={(e) =>
+                handleContactChange(index, "value", e.target.value)
+              }
+              placeholder={getPlaceholderText(contact.type)}
+              required
+              fullWidth
+            />
 
-<IconButton
+            <IconButton
               onClick={() => handleRemoveContact(index)}
               sx={{
                 width: 50,
@@ -219,45 +219,45 @@ export default function UpdateForm({ onClose, client }) {
                 },
               }}
             >
-            <CloseIcon
+              <CloseIcon
                 sx={{
                   width: 1,
                   height: 1,
                   color: "white",
                 }}
               />
-          </IconButton>
+            </IconButton>
           </Box>
         </Box>
       ))}
 
       {contacts.length < 10 && (
         <Box
-        sx={{
-          width: "100%",
-          height: 50,
-          display: "flex",
-          justifyContent: "center",
-          backgroundColor: "#292929",
-        }}
-      >
-        <Button
-          variant="outlined"
-          onClick={handleAddContact}
           sx={{
-            border: "none",
-            color: "white",
+            width: "100%",
+            height: 50,
+            display: "flex",
+            justifyContent: "center",
+            backgroundColor: "#292929",
           }}
         >
-          <AddCircleOutlineOutlinedIcon
-            sx={{ color: "aqua", marginBottom: 0.2, marginRight: 0.5 }}
-          ></AddCircleOutlineOutlinedIcon>{" "}
-          Добавить контакт
-        </Button>
-      </Box>
+          <Button
+            variant="outlined"
+            onClick={handleAddContact}
+            sx={{
+              border: "none",
+              color: "white",
+            }}
+          >
+            <AddCircleOutlineOutlinedIcon
+              sx={{ color: "aqua", marginBottom: 0.2, marginRight: 0.5 }}
+            ></AddCircleOutlineOutlinedIcon>{" "}
+            Добавить контакт
+          </Button>
+        </Box>
       )}
 
-<Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
         <Button
           variant="contained"
           type="submit"
