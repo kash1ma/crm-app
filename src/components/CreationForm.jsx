@@ -48,6 +48,23 @@ export default function ClientForm({ onClose }) {
     setContacts(updatedContacts);
   };
 
+  const getPlaceholderText = (type) => {
+    switch (type) {
+      case "phone":
+        return "Введите номер телефона";
+      case "Email":
+        return "Введите адрес электронной почты";
+      case "Facebook":
+        return "Введите ссылку на профиль";
+      case "VK":
+        return "Введите ссылку на профиль";
+      case "Другое":
+        return "Введите контактную информацию";
+      default:
+        return "Введите контакт";
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -184,7 +201,7 @@ export default function ClientForm({ onClose }) {
               onChange={(e) =>
                 handleContactChange(index, "value", e.target.value)
               }
-              placeholder="Введите контакт"
+              placeholder= {getPlaceholderText(contact.type)}
               required
               fullWidth
             />
