@@ -63,11 +63,11 @@ const ClientsTable = () => {
   ];
 
   const icons = {
-    email: EmailIcon,
-    facebook: FacebookIcon,
-    git: GitIcon,
+    Email: EmailIcon,
+    Facebook: FacebookIcon,
+    Other: GitIcon,
     phone: PhoneIcon,
-    vk: VkIcon,
+    VK: VkIcon,
   };
 
   const [clients, setClients] = useState([]);
