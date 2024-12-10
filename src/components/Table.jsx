@@ -28,12 +28,11 @@ import {
   Modal,
 } from "@mui/material";
 
-
-import VkIcon from "../assets/icons/vk.svg"
-import PhoneIcon from "../assets/icons/Phone icon.svg"
-import GitIcon from "../assets/icons/Git icon.svg"
-import FacebookIcon from "../assets/icons/fb.svg"
-import EmailIcon from "../assets/icons/email.svg"
+import VkIcon from "../assets/icons/vk.svg";
+import PhoneIcon from "../assets/icons/Phone icon.svg";
+import GitIcon from "../assets/icons/Git icon.svg";
+import FacebookIcon from "../assets/icons/fb.svg";
+import EmailIcon from "../assets/icons/email.svg";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -55,68 +54,29 @@ const style = {
 
 const ClientsTable = () => {
   const headers = [
-    {
-      id: "id",
-      label: "id",
-      sort() {
-        handleSort("id");
-      },
-    },
-    {
-      id: "name",
-      label: "Имя Фамилия Отчество",
-      sort() {
-        handleSort("name")
-      },
-    },
-    {
-      id: "createTime",
-      label: "Дата и время создания",
-      sort() {
-        handleSort("createTime")
-      },
-    },
-    {
-      id: "lastChange",
-      label: "Последние изменения",
-      sort() {
-        handleSort("lastChange")
-      },
-    },
-    {
-      id: "id",
-      label: "Контакты",
-    },
-    {
-      id: "id",
-      label: "Действия",
-    },
+    { label: "ID", sortable: true },
+    { label: "Name", sortable: true },
+    { label: "Created At", sortable: true },
+    { label: "Updated At", sortable: true },
+    { label: "Contacts", sortable: false },
+    { label: "Actions", sortable: false },
   ];
 
   const icons = {
-    email : EmailIcon,
-    facebook : FacebookIcon,
-    git : GitIcon,
-    phone : PhoneIcon,
-    vk : VkIcon
-  }
+    email: EmailIcon,
+    facebook: FacebookIcon,
+    git: GitIcon,
+    phone: PhoneIcon,
+    vk: VkIcon,
+  };
 
   const [clients, setClients] = useState([]);
   const [updatedClient, setUpdatedClient] = useState([]);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [sortConfigId, setSortConfigId] = useState({
-    direction: "ascending",
-  });
-  const [sortConfigName, setSortConfigName] = useState({
-    direction: "ascending",
-  });
-  const [sortConfigCreatedTime, setSortConfigCreatedTime] = useState({
-    direction: "ascending",
-  });
-  const [sortConfigLastChange, setSortConfigLastChange] = useState({
-    direction: "ascending",
+  const [sortConfig, setSortConfig] = useState({
+    direction: "asc",
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -162,30 +122,7 @@ const ClientsTable = () => {
     fetchClients();
   }
 
-  function handleSort(column) {
-    if (column === "id") { 
-      const direction = 
-      sortConfigId.direction === "ascending" ? "descending" : "ascending";
-      setSortConfigId({ direction });
-      setClients(sortById(clients, direction));
-    }
-    if (column === "name") {
-      const direction = sortConfigName.direction === "ascending" ? "descending" : "ascending";
-      setSortConfigName({direction});
-      setClients(sortByName(clients, direction))
-    }
-    if (column === "createTime") {
-      const direction = sortConfigCreatedTime.direction === "ascending" ? "descending" : "ascending";
-      setSortConfigCreatedTime({direction});
-      setClients(sortByDate(clients, "createdAt", direction))
-    }
-    if (column === "lastChange"){
-      const direction = sortConfigLastChange.direction === "ascending" ? "descending" : "ascending";
-      setSortConfigLastChange({direction});
-      setClients(sortByDate(clients, "updatedAt", direction))
-    }
-  }
-
+  function handleSort(column) {}
 
   function handleDelete(id) {
     deleteClient(id)
@@ -240,9 +177,7 @@ const ClientsTable = () => {
                   >
                     {Object.keys(header).includes("sort") ? (
                       <Button
-
                         onClick={() => handleSort(header.id)}
-
                         sx={{
                           textAlign: "center",
                           bgcolor: "#212121",
@@ -277,15 +212,39 @@ const ClientsTable = () => {
                   <TableCell sx={{ textAlign: "center" }}>{`${client.name} ${
                     client.surname
                   } ${client.lastName || ""}`}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{`${extractDateTime(client.createdAt).date}`} {<span style={{ color: "#B0B0B0", marginLeft: "3px"}}>{`${extractDateTime(client.createdAt).time}`}</span>}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{`${extractDateTime(client.updatedAt).date}`} {<span style={{ color: "#B0B0B0", marginLeft: "3px"}}>{`${extractDateTime(client.updatedAt).time}`}</span>}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    <Box sx={{ display: "flex", justifyContent: "center", gap: 1}} >
-                    {Array.from(JSON.parse(client.contacts)).map((item) => (
-                      
-                        <img key={item.type} style={{ height: "2.5vh", aspectRatio: 1, color : "blue"}} src={icons[item.type]} alt="" />
+                    {`${extractDateTime(client.createdAt).date}`}{" "}
+                    {
+                      <span style={{ color: "#B0B0B0", marginLeft: "3px" }}>{`${
+                        extractDateTime(client.createdAt).time
+                      }`}</span>
+                    }
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    {`${extractDateTime(client.updatedAt).date}`}{" "}
+                    {
+                      <span style={{ color: "#B0B0B0", marginLeft: "3px" }}>{`${
+                        extractDateTime(client.updatedAt).time
+                      }`}</span>
+                    }
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>
+                    <Box
+                      sx={{ display: "flex", justifyContent: "center", gap: 1 }}
+                    >
+                      {Array.from(JSON.parse(client.contacts)).map((item) => (
+                        <img
+                          key={item.type}
+                          style={{
+                            height: "2.5vh",
+                            aspectRatio: 1,
+                            color: "blue",
+                          }}
+                          src={icons[item.type]}
+                          alt=""
+                        />
                       ))}
-                      </Box>
+                    </Box>
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <Button onClick={() => handleEdit(client)}>
