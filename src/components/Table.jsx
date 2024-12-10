@@ -186,7 +186,6 @@ const ClientsTable = () => {
     }
   }
 
-  
 
   function handleDelete(id) {
     deleteClient(id)
@@ -241,7 +240,9 @@ const ClientsTable = () => {
                   >
                     {Object.keys(header).includes("sort") ? (
                       <Button
+
                         onClick={() => handleSort(header.id)}
+
                         sx={{
                           textAlign: "center",
                           bgcolor: "#212121",

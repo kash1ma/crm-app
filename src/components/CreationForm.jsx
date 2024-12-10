@@ -58,7 +58,7 @@ export default function ClientForm({ onClose }) {
         return "Введите ссылку на профиль";
       case "VK":
         return "Введите ссылку на профиль";
-      case "Другое":
+      case "Other":
         return "Введите контактную информацию";
       default:
         return "Введите контакт";
@@ -114,8 +114,8 @@ export default function ClientForm({ onClose }) {
         <TextField
           sx={style}
           label="Фамилия"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          value={surname}
+          onChange={(e) => setSurname(e.target.value)}
           placeholder="Введите фамилию"
           required
           fullWidth
@@ -124,8 +124,8 @@ export default function ClientForm({ onClose }) {
         <TextField
           sx={style}
           label="Отчество"
-          value={surname}
-          onChange={(e) => setSurname(e.target.value)}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
           placeholder="Введите Отчество"
           fullWidth
         />
@@ -167,7 +167,7 @@ export default function ClientForm({ onClose }) {
                 <MenuItem value="Email">Емейл</MenuItem>
                 <MenuItem value="Facebook">Фейсбук</MenuItem>
                 <MenuItem value="VK">ВК</MenuItem>
-                <MenuItem value="Другое">Другое</MenuItem>
+                <MenuItem value="Other">Другое</MenuItem>
               </Select>
             </FormControl>
 
@@ -201,7 +201,7 @@ export default function ClientForm({ onClose }) {
               onChange={(e) =>
                 handleContactChange(index, "value", e.target.value)
               }
-              placeholder= {getPlaceholderText(contact.type)}
+              placeholder={getPlaceholderText(contact.type)}
               required
               fullWidth
             />
