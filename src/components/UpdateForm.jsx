@@ -79,7 +79,7 @@ export default function UpdateForm({ onClose, client }) {
         return "Введите ссылку на профиль";
       case "VK":
         return "Введите ссылку на профиль";
-      case "Другое":
+      case "Other":
         return "Введите контактную информацию";
       default:
         return "Введите контакт";
@@ -167,7 +167,7 @@ export default function UpdateForm({ onClose, client }) {
                 <MenuItem value="Email">Емейл</MenuItem>
                 <MenuItem value="Facebook">Фейсбук</MenuItem>
                 <MenuItem value="VK">ВК</MenuItem>
-                <MenuItem value="Другое">Другое</MenuItem>
+                <MenuItem value="Other">Другое</MenuItem>
               </Select>
             </FormControl>
 
