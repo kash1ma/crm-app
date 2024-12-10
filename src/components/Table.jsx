@@ -48,12 +48,42 @@ const style = {
 
 const ClientsTable = () => {
   const headers = [
-    { label: "ID", sortable: true },
-    { label: "Name", sortable: true },
-    { label: "Created At", sortable: true },
-    { label: "Updated At", sortable: true },
-    { label: "Contacts", sortable: false },
-    { label: "Actions", sortable: false },
+    {
+      id: "id",
+      label: "id",
+      sort() {
+        handleSort("id");
+      },
+    },
+    {
+      id: "name",
+      label: "Имя Фамилия Отчество",
+      sort() {
+        handleSort("name")
+      },
+    },
+    {
+      id: "createTime",
+      label: "Дата и время создания",
+      sort() {
+        handleSort("createTime")
+      },
+    },
+    {
+      id: "lastChange",
+      label: "Последние изменения",
+      sort() {
+        handleSort("lastChange")
+      },
+    },
+    {
+      id: "id",
+      label: "Контакты",
+    },
+    {
+      id: "id",
+      label: "Действия",
+    },
   ];
 
   const [clients, setClients] = useState([]);
@@ -61,8 +91,17 @@ const ClientsTable = () => {
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [sortConfig, setSortConfig] = useState({
-    direction: "asc",
+  const [sortConfigId, setSortConfigId] = useState({
+    direction: "ascending",
+  });
+  const [sortConfigName, setSortConfigName] = useState({
+    direction: "ascending",
+  });
+  const [sortConfigCreatedTime, setSortConfigCreatedTime] = useState({
+    direction: "ascending",
+  });
+  const [sortConfigLastChange, setSortConfigLastChange] = useState({
+    direction: "ascending",
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -108,7 +147,29 @@ const ClientsTable = () => {
     fetchClients();
   }
 
-  function handleSort(column) {}
+  function handleSort(column) {
+    if (column === "id") { 
+      const direction = 
+      sortConfigId.direction === "ascending" ? "descending" : "ascending";
+      setSortConfigId({ direction });
+      setClients(sortById(clients, direction));
+    }
+    if (column === "name") {
+      const direction = sortConfigName.direction === "ascending" ? "descending" : "ascending";
+      setSortConfigName({direction});
+      setClients(sortByName(clients, direction))
+    }
+    if (column === "createTime") {
+      const direction = sortConfigCreatedTime.direction === "ascending" ? "descending" : "ascending";
+      setSortConfigCreatedTime({direction});
+      setClients(sortByDate(clients, "createdAt", direction))
+    }
+    if (column === "lastChange"){
+      const direction = sortConfigLastChange.direction === "ascending" ? "descending" : "ascending";
+      setSortConfigLastChange({direction});
+      setClients(sortByDate(clients, "updatedAt", direction))
+    }
+  }
 
   function handleDelete(id) {
     deleteClient(id)
@@ -137,14 +198,14 @@ const ClientsTable = () => {
 
   return (
     <>
-      <Container sx={{ mt: 6}} maxWidth="xl">
+      <Container sx={{ mt: 6 }} maxWidth="xl">
         <Typography
           variant="h2"
           component="h1"
           paddingTop={"2rem"}
           gutterBottom
           align="left"
-          sx={{color: "white"}}
+          sx={{ color: "white" }}
         >
           Клиенты
         </Typography>
@@ -161,7 +222,20 @@ const ClientsTable = () => {
                     }}
                     key={index}
                   >
-                    {header.label}
+                    {Object.keys(header).includes("sort") ? (
+                      <Button
+                        onClick={() => header.sort()}
+                        sx={{
+                          textAlign: "center",
+                          bgcolor: "#212121",
+                          color: "white",
+                        }}
+                      >
+                        {header.label}
+                      </Button>
+                    ) : (
+                      header.label.toUpperCase()
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
@@ -267,10 +341,10 @@ const ClientsTable = () => {
             justifyContent: "center",
             alignItems: "center",
             gap: 0.5,
-            backgroundColor: "#212121"
+            backgroundColor: "#212121",
           }}
         >
-          <PersonAddAlt1Icon sx={{ marginTop: "-0.3rem"}}></PersonAddAlt1Icon>
+          <PersonAddAlt1Icon sx={{ marginTop: "-0.3rem" }}></PersonAddAlt1Icon>
           Добавить клиента
         </Button>
 
