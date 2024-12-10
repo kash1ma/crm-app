@@ -156,8 +156,8 @@ const ClientsTable = () => {
                   <TableCell
                     sx={{
                       textAlign: "center",
-                      bgcolor: "#292929",
-                      color: "#B0B0B0",
+                      bgcolor: "#212121",
+                      color: "white",
                     }}
                     key={index}
                   >
