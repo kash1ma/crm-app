@@ -3,18 +3,18 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import logo from "../assets/logo.webp";
+import logo from "../assets/logogo.png";
 
 function Header() {
   return (
-    <AppBar sx={{ bgcolor: "#282828" }}>
+    <AppBar sx={{ bgcolor: "#282828"}}>
       <Toolbar>
         <Box sx={{ display: "flex", alignItems: "center", width: "50%" }}>
           <Box sx={{ mr: 5 }}>
             <img
               src={logo}
               alt="icon"
-              style={{ height: "40px", width: "40px" }}
+              style={{ height: "45px", width: "45px" }}
             />
           </Box>
           <TextField

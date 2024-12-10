@@ -25,10 +25,28 @@ import {
   Alert,
   Button,
   Box,
-  Modal
+
+  Modal,
 } from "@mui/material";
 
+import CloseIcon from "@mui/icons-material/Close";
+
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+
+
 import { Margin } from "@mui/icons-material";
+import UpdateForm from "./UpdateForm";
+
+import { Fade } from "@mui/material";
+
+const style = {
+  margin: "0 auto",
+  marginTop: 15,
+  width: 550, // эквивалент size="lg"
+  bgcolor: "#1B1B1B",
+  boxShadow: 24,
+  borderRadius: "10px 10px 40px 40px",
+};
 
 
 const style = {
@@ -54,8 +72,10 @@ const ClientsTable = () => {
   ];
 
   const [clients, setClients] = useState([]);
+  const [updatedClient, setUpdatedClient] = useState([]);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [sortConfig, setSortConfig] = useState({
     direction: "asc",
   });
@@ -92,6 +112,17 @@ const ClientsTable = () => {
     return <ClientForm />;
   }
 
+  const handleEdit = (client) => {
+    setUpdatedClient(client);
+    setShowEdit(true);
+    return <UpdateForm onClose={handleCloseEdit} client={client} />;
+  };
+
+  function handleCloseEdit() {
+    setShowEdit(false);
+    fetchClients();
+  }
+
   function handleSort(column) {}
 
   function handleDelete(id) {
@@ -121,13 +152,14 @@ const ClientsTable = () => {
 
   return (
     <>
-      <Container sx={{ mt: 6 }} maxWidth="xl">
+      <Container sx={{ mt: 6}} maxWidth="xl">
         <Typography
           variant="h2"
           component="h1"
           paddingTop={"2rem"}
           gutterBottom
           align="left"
+          sx={{color: "white"}}
         >
           Клиенты
         </Typography>
@@ -139,8 +171,8 @@ const ClientsTable = () => {
                   <TableCell
                     sx={{
                       textAlign: "center",
-                      bgcolor: "#292929",
-                      color: "#B0B0B0",
+                      bgcolor: "#212121",
+                      color: "white",
                     }}
                     key={index}
                   >
@@ -155,7 +187,10 @@ const ClientsTable = () => {
                   key={client.id}
                   sx={{
                     "&:hover": {
-                      backgroundColor: "#282828",
+                      backgroundColor: "#3E3E3E",
+                      "& .MuiTableCell-root": {
+                        color: "#FFFFFF",
+                      },
                     },
                   }}
                 >
@@ -175,16 +210,12 @@ const ClientsTable = () => {
                     {JSON.parse(client.contacts).toString()}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {
-                      <Button onClick={() => handleShow()}>
-                        <EditIcon />
-                      </Button>
-                    }
-                    {
-                      <Button onClick={() => handleDelete(client.id)}>
-                        <DeleteIcon sx={{ color: "red" }} />
-                      </Button>
-                    }
+                    <Button onClick={() => handleEdit(client)}>
+                      <EditIcon sx={{ color: "inherit" }} />
+                    </Button>
+                    <Button onClick={() => handleDelete(client.id)}>
+                      <DeleteIcon sx={{ color: "red" }} />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -193,22 +224,124 @@ const ClientsTable = () => {
         </TableContainer>
       </Container>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
+
+        <Modal
+          open={showEdit}
+          onClose={handleCloseEdit}
+          aria-labelledby="modal-title"
+          sx={{ overflow: "scroll" }}
+        >
+          <Box
+            sx={{
+              ...style,
+              transform: "translateY(20px)",
+              transition: "transform 0.3s ease-out",
+            }}
+          >
+
         <Button variant="contained" onClick={handleShow}>
           Добавить клиента
         </Button>
 
         <Modal open={show} onClose={handleClose} aria-labelledby="modal-title">
           <Box sx={style}>
+
             <Typography
               id="modal-title"
               variant="h6"
               component="h2"
+
+              sx={{
+                padding: "3rem 0 0 2rem",
+                fontSize: 35,
+                color: "white",
+              }}
+            >
+              Обновить данные
+            </Typography>
+            <Button
+              onClick={handleCloseEdit}
+              sx={{
+                position: "relative",
+                top: -70,
+                left: 477,
+                color: "white",
+              }}
+            >
+              <CloseIcon
+                sx={{
+                  height: "3rem",
+                  width: "3rem",
+                }}
+              ></CloseIcon>
+            </Button>
+            <UpdateForm onClose={handleCloseEdit} client={updatedClient} />
+          </Box>
+        </Modal>
+        <Button
+          variant="contained"
+          onClick={handleShow}
+          sx={{
+            marginTop: "2rem",
+            background: "white",
+            border: "1px solid #6D92D6",
+            height: "44px",
+            width: "216px",
+            color: "#6D92D6",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 0.5,
+            backgroundColor: "#212121"
+          }}
+        >
+          <PersonAddAlt1Icon sx={{ marginTop: "-0.3rem"}}></PersonAddAlt1Icon>
+          Добавить клиента
+        </Button>
+
+        <Modal
+          open={show}
+          onClose={handleClose}
+          aria-labelledby="modal-title"
+          sx={{ overflow: "scroll" }}
+        >
+          <Fade in={show}>
+            <Box sx={style}>
+              <Typography
+                id="modal-title"
+                variant="h6"
+                component="h2"
+                sx={{ padding: "3rem 0 0 2rem", fontSize: 35, color: "white" }}
+              >
+                Новый пользователь
+              </Typography>
+              <Button
+                onClick={handleClose}
+                sx={{
+                  position: "relative",
+                  top: -70,
+                  left: 477,
+                  color: "white",
+                }}
+              >
+                <CloseIcon
+                  sx={{
+                    height: "3rem",
+                    width: "3rem",
+                  }}
+                ></CloseIcon>
+              </Button>
+              <ClientForm onClose={handleClose} />
+            </Box>
+          </Fade>
+
               sx={{ mb: 2 }}
             >
               Добавление клиента
             </Typography>
             <ClientForm onClose={handleClose} />
           </Box>
+
         </Modal>
       </Box>
     </>

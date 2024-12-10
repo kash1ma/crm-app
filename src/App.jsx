@@ -6,6 +6,7 @@ import { Modal, Button } from "react-bootstrap";
 import ClientForm from "./components/CreationForm";
 import Header from "./components/Header";
 import { getClients } from "../services/clientsService";
+import './App.css'
 
 function ClientList() {
   const [clients, setClients] = useState([]);
@@ -43,7 +44,7 @@ function ClientList() {
   }
 
   return (
-    <div sx={{ bgcolor: "#141414" }}>
+    <div sx={{ color: "#141414" }}>
       <Header />
 
       <ClientsTable />
