@@ -35,6 +35,8 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import { Margin } from "@mui/icons-material";
 import UpdateForm from "./UpdateForm";
 
+import { Fade } from "@mui/material";
+
 const style = {
   margin: "0 auto",
   marginTop: 15,
@@ -135,13 +137,14 @@ const ClientsTable = () => {
 
   return (
     <>
-      <Container sx={{ mt: 6 }} maxWidth="xl">
+      <Container sx={{ mt: 6}} maxWidth="xl">
         <Typography
           variant="h2"
           component="h1"
           paddingTop={"2rem"}
           gutterBottom
           align="left"
+          sx={{color: "white"}}
         >
           Клиенты
         </Typography>
@@ -169,7 +172,10 @@ const ClientsTable = () => {
                   key={client.id}
                   sx={{
                     "&:hover": {
-                      backgroundColor: "#282828",
+                      backgroundColor: "#3E3E3E",
+                      "& .MuiTableCell-root": {
+                        color: "#FFFFFF",
+                      },
                     },
                   }}
                 >
@@ -189,16 +195,12 @@ const ClientsTable = () => {
                     {JSON.parse(client.contacts).toString()}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {
-                      <Button onClick={() => handleEdit(client)}>
-                        <EditIcon />
-                      </Button>
-                    }
-                    {
-                      <Button onClick={() => handleDelete(client.id)}>
-                        <DeleteIcon sx={{ color: "red" }} />
-                      </Button>
-                    }
+                    <Button onClick={() => handleEdit(client)}>
+                      <EditIcon sx={{ color: "inherit" }} />
+                    </Button>
+                    <Button onClick={() => handleDelete(client.id)}>
+                      <DeleteIcon sx={{ color: "red" }} />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -213,7 +215,13 @@ const ClientsTable = () => {
           aria-labelledby="modal-title"
           sx={{ overflow: "scroll" }}
         >
-          <Box sx={style}>
+          <Box
+            sx={{
+              ...style,
+              transform: "translateY(20px)",
+              transition: "transform 0.3s ease-out",
+            }}
+          >
             <Typography
               id="modal-title"
               variant="h6"
@@ -259,9 +267,10 @@ const ClientsTable = () => {
             justifyContent: "center",
             alignItems: "center",
             gap: 0.5,
+            backgroundColor: "#212121"
           }}
         >
-          <PersonAddAlt1Icon sx={{ marginTop: "-0.3rem" }}></PersonAddAlt1Icon>
+          <PersonAddAlt1Icon sx={{ marginTop: "-0.3rem"}}></PersonAddAlt1Icon>
           Добавить клиента
         </Button>
 
@@ -271,33 +280,35 @@ const ClientsTable = () => {
           aria-labelledby="modal-title"
           sx={{ overflow: "scroll" }}
         >
-          <Box sx={style}>
-            <Typography
-              id="modal-title"
-              variant="h6"
-              component="h2"
-              sx={{ padding: "3rem 0 0 2rem", fontSize: 35, color: "white" }}
-            >
-              Новый пользователь
-            </Typography>
-            <Button
-              onClick={handleClose}
-              sx={{
-                position: "relative",
-                top: -70,
-                left: 477,
-                color: "white",
-              }}
-            >
-              <CloseIcon
+          <Fade in={show}>
+            <Box sx={style}>
+              <Typography
+                id="modal-title"
+                variant="h6"
+                component="h2"
+                sx={{ padding: "3rem 0 0 2rem", fontSize: 35, color: "white" }}
+              >
+                Новый пользователь
+              </Typography>
+              <Button
+                onClick={handleClose}
                 sx={{
-                  height: "3rem",
-                  width: "3rem",
+                  position: "relative",
+                  top: -70,
+                  left: 477,
+                  color: "white",
                 }}
-              ></CloseIcon>
-            </Button>
-            <ClientForm onClose={handleClose} />
-          </Box>
+              >
+                <CloseIcon
+                  sx={{
+                    height: "3rem",
+                    width: "3rem",
+                  }}
+                ></CloseIcon>
+              </Button>
+              <ClientForm onClose={handleClose} />
+            </Box>
+          </Fade>
         </Modal>
       </Box>
     </>
