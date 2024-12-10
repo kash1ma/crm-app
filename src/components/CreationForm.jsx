@@ -81,9 +81,7 @@ export default function ClientForm({ onClose }) {
           p: "0 2rem 2rem 2rem",
           display: "flex",
           flexDirection: "column",
-          gap: 3,
-          marginTop: 3,
-          margin: "0 auto",
+          gap: 4,
         }}
       >
         <TextField
@@ -125,7 +123,6 @@ export default function ClientForm({ onClose }) {
             padding: 0,
             display: "flex",
             flexDirection: "column",
-            gap: 2,
           }}
         >
           <Box
@@ -219,6 +216,7 @@ export default function ClientForm({ onClose }) {
         <Box
           sx={{
             width: "100%",
+            height: 50,
             display: "flex",
             justifyContent: "center",
             backgroundColor: "#292929",
@@ -230,7 +228,6 @@ export default function ClientForm({ onClose }) {
             sx={{
               border: "none",
               color: "white",
-              paddingBottom: "1rem",
             }}
           >
             <AddCircleOutlineOutlinedIcon
