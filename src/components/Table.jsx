@@ -28,6 +28,13 @@ import {
   Modal,
 } from "@mui/material";
 
+
+import VkIcon from "../assets/icons/vk.svg"
+import PhoneIcon from "../assets/icons/Phone icon.svg"
+import GitIcon from "../assets/icons/Git icon.svg"
+import FacebookIcon from "../assets/icons/fb.svg"
+import EmailIcon from "../assets/icons/email.svg"
+
 import CloseIcon from "@mui/icons-material/Close";
 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
@@ -85,6 +92,14 @@ const ClientsTable = () => {
       label: "Действия",
     },
   ];
+
+  const icons = {
+    email : EmailIcon,
+    facebook : FacebookIcon,
+    git : GitIcon,
+    phone : PhoneIcon,
+    vk : VkIcon
+  }
 
   const [clients, setClients] = useState([]);
   const [updatedClient, setUpdatedClient] = useState([]);
@@ -171,6 +186,8 @@ const ClientsTable = () => {
     }
   }
 
+  
+
   function handleDelete(id) {
     deleteClient(id)
       .then(() => {
@@ -224,7 +241,7 @@ const ClientsTable = () => {
                   >
                     {Object.keys(header).includes("sort") ? (
                       <Button
-                        onClick={() => header.sort()}
+                        onClick={() => handleSort(header.id)}
                         sx={{
                           textAlign: "center",
                           bgcolor: "#212121",
@@ -259,14 +276,15 @@ const ClientsTable = () => {
                   <TableCell sx={{ textAlign: "center" }}>{`${client.name} ${
                     client.surname
                   } ${client.lastName || ""}`}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{`${
-                    extractDateTime(client.createdAt).date
-                  } ${extractDateTime(client.createdAt).time}`}</TableCell>
-                  <TableCell sx={{ textAlign: "center" }}>{`${
-                    extractDateTime(client.updatedAt).date
-                  } ${extractDateTime(client.updatedAt).time}`}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{`${extractDateTime(client.createdAt).date}`} {<span style={{ color: "#B0B0B0", marginLeft: "3px"}}>{`${extractDateTime(client.createdAt).time}`}</span>}</TableCell>
+                  <TableCell sx={{ textAlign: "center" }}>{`${extractDateTime(client.updatedAt).date}`} {<span style={{ color: "#B0B0B0", marginLeft: "3px"}}>{`${extractDateTime(client.updatedAt).time}`}</span>}</TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
-                    {JSON.parse(client.contacts).toString()}
+                    <Box sx={{ display: "flex", justifyContent: "center", gap: 1}} >
+                    {Array.from(JSON.parse(client.contacts)).map((item) => (
+                      
+                        <img key={item.type} style={{ height: "2.5vh", aspectRatio: 1, color : "blue"}} src={icons[item.type]} alt="" />
+                      ))}
+                      </Box>
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>
                     <Button onClick={() => handleEdit(client)}>
