@@ -314,7 +314,7 @@ const ClientsTable = () => {
                           <img
                             key={item.type}
                             style={{
-                              height: "3.5vh",
+                              height: "2.5vh",
                               aspectRatio: 1,
                               color: "blue",
                               cursor: "pointer",
