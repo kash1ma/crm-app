@@ -22,27 +22,31 @@ import {
   Typography,
   Container,
   CircularProgress,
+  Alert,
   Button,
-  Tooltip,
   Box,
   Modal,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
-
+ 
 import VkIcon from "../assets/icons/vk.svg";
 import PhoneIcon from "../assets/icons/Phone icon.svg";
 import GitIcon from "../assets/icons/Git icon.svg";
 import FacebookIcon from "../assets/icons/fb.svg";
 import EmailIcon from "../assets/icons/email.svg";
-
+ 
 import CloseIcon from "@mui/icons-material/Close";
-
+ 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-
+ 
 import { Margin } from "@mui/icons-material";
 import UpdateForm from "./UpdateForm";
-
+ 
 import { Fade } from "@mui/material";
-
+ 
 const style = {
   margin: "0 auto",
   marginTop: 15,
@@ -51,7 +55,7 @@ const style = {
   boxShadow: 24,
   borderRadius: "10px 10px 40px 40px",
 };
-
+ 
 const ClientsTable = () => {
   const headers = [
     {
@@ -91,7 +95,7 @@ const ClientsTable = () => {
       label: "Действия",
     },
   ];
-
+ 
   const icons = {
     email: EmailIcon,
     Facebook: FacebookIcon,
@@ -99,12 +103,14 @@ const ClientsTable = () => {
     phone: PhoneIcon,
     VK: VkIcon,
   };
-
+ 
   const [clients, setClients] = useState([]);
   const [updatedClient, setUpdatedClient] = useState([]);
   const [error, setError] = useState(null);
   const [show, setShow] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [clientToDelete, setClientToDelete] = useState(null);
   const [sortConfigId, setSortConfigId] = useState({
     direction: "ascending",
   });
@@ -118,7 +124,7 @@ const ClientsTable = () => {
     direction: "ascending",
   });
   const [isLoading, setIsLoading] = useState(true);
-
+ 
   const fetchClients = async () => {
     try {
       setIsLoading(true);
@@ -131,36 +137,36 @@ const ClientsTable = () => {
       setIsLoading(false);
     }
   };
-
+ 
   useEffect(() => {
     fetchClients();
   }, []);
-
+ 
   if (error) {
     return <div>Error: {error}</div>;
   }
-
+ 
   function handleClose() {
     setShow(false);
     fetchClients();
   }
-
+ 
   function handleShow() {
     setShow(true);
     return <ClientForm />;
   }
-
+ 
   const handleEdit = (client) => {
     setUpdatedClient(client);
     setShowEdit(true);
     return <UpdateForm onClose={handleCloseEdit} client={client} />;
   };
-
+ 
   function handleCloseEdit() {
     setShowEdit(false);
     fetchClients();
   }
-
+ 
   function handleSort(column) {
     if (column === "id") {
       const direction =
@@ -191,22 +197,28 @@ const ClientsTable = () => {
       setClients(sortByDate(clients, "updatedAt", direction));
     }
   }
-
+ 
   function handleDelete(id) {
-    deleteClient(id)
-      .then(() => {
-        setClients((prevClients) =>
-          prevClients.filter((client) => client.id !== id)
-        );
-        console.log("Client successfully deleted");
-      })
-      .catch((err) => {
-        setError(err.response?.data?.message || "Failed to delete client");
-      });
-    fetchClients();
-    console.log("Client successfully deleted");
+    setClientToDelete(id);
+    setShowConfirm(true);
   }
-
+ 
+  const confirmDelete = async () => {
+    try {
+      await deleteClient(clientToDelete);
+      setClients((prevClients) => prevClients.filter((client) => client.id !== clientToDelete));
+      setShowConfirm(false);
+      setClientToDelete(null);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to delete client");
+    }
+  };
+  const cancelDelete = () => {
+    setShowConfirm(false);
+    setClientToDelete(null);
+  };
+ 
+ 
   if (isLoading)
     return (
       <Box minHeight="xl" sx={{ position: "relative" }}>
@@ -216,10 +228,10 @@ const ClientsTable = () => {
         />
       </Box>
     );
-
+ 
   return (
     <>
-      <Container sx={{ mt: 6 }} maxWidth="xll">
+      <Container sx={{ mt: 6 }} maxWidth="xl">
         <Typography
           variant="h2"
           component="h1"
@@ -301,28 +313,16 @@ const ClientsTable = () => {
                       sx={{ display: "flex", justifyContent: "center", gap: 1 }}
                     >
                       {Array.from(JSON.parse(client.contacts)).map((item) => (
-                        <Tooltip
+                        <img
                           key={item.type}
-                          title={
-                            <Typography sx={{ color: "white" }}>
-                              {item.value || "Unknown"}
-                            </Typography>
-                          }
-                          placement="top"
-                          arrow
-                        >
-                          <img
-                            key={item.type}
-                            style={{
-                              height: "2.5vh",
-                              aspectRatio: 1,
-                              color: "blue",
-                              cursor: "pointer",
-                            }}
-                            src={icons[item.type]}
-                            alt=""
-                          />
-                        </Tooltip>
+                          style={{
+                            height: "2.5vh",
+                            aspectRatio: 1,
+                            color: "blue",
+                          }}
+                          src={icons[item.type]}
+                          alt=""
+                        />
                       ))}
                     </Box>
                   </TableCell>
@@ -339,6 +339,58 @@ const ClientsTable = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Dialog sx={{
+          '& .MuiDialog-paper': {
+              backgroundColor: '#1B1B1B',
+              width: "424px",
+              height: "274px",
+              borderRadius: "30px"
+            },
+          }}
+           open={showConfirm} onClose={cancelDelete}>
+          <DialogTitle sx={{
+            color: "white",
+            textAlign: "center",
+            marginTop: "25px",
+            fontSize: "18px",
+            }}>Удалить клиента</DialogTitle>
+          <DialogContent sx={{
+            color: "white",
+            textAlign: "center",
+            fontSize: "14px",
+            maxWidth: "300px",
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            }}>
+            Вы действительно хотите удалить данного клиента?
+          </DialogContent>
+          <DialogActions sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 2
+          }}>
+            <Button onClick={confirmDelete} color="error" sx={{
+              color: "white",
+              borderRadius: "13px",
+              padding: "13px",
+              width: "150px",
+              height: "40px",
+              backgroundColor: "#555555",
+              fontSize: "14px",
+              textTransform: "none"
+              }}>
+              Удалить
+            </Button>
+            <Button onClick={cancelDelete} color="primary" sx={{
+              color: "#8F8F8F",
+              fontSize: "12px",
+              textTransform: "none",
+              }}>
+              Отмена
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Modal
@@ -390,7 +442,6 @@ const ClientsTable = () => {
           onClick={handleShow}
           sx={{
             marginTop: "2rem",
-            marginBottom: "2rem",
             background: "white",
             border: "1px solid #6D92D6",
             height: "44px",
@@ -406,7 +457,7 @@ const ClientsTable = () => {
           <PersonAddAlt1Icon sx={{ marginTop: "-0.3rem" }}></PersonAddAlt1Icon>
           Добавить клиента
         </Button>
-
+ 
         <Modal
           open={show}
           onClose={handleClose}
@@ -447,5 +498,5 @@ const ClientsTable = () => {
     </>
   );
 };
-
+ 
 export default ClientsTable;
