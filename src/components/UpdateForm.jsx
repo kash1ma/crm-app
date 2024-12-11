@@ -115,8 +115,8 @@ export default function UpdateForm({ onClose, client }) {
         <TextField
           sx={style}
           label="Фамилия"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          value={surname}
+          onChange={(e) => setSurname(e.target.value)}
           placeholder="Введите фамилию"
           required
           fullWidth
@@ -125,8 +125,8 @@ export default function UpdateForm({ onClose, client }) {
         <TextField
           sx={style}
           label="Отчество"
-          value={surname}
-          onChange={(e) => setSurname(e.target.value)}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
           placeholder="Введите отчество"
           fullWidth
         />
