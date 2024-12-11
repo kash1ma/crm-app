@@ -42,7 +42,6 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import { Margin } from "@mui/icons-material";
 import UpdateForm from "./UpdateForm";
-
 const style = {
   margin: "0 auto",
   marginTop: 15,
@@ -215,7 +214,6 @@ const ClientsTable = () => {
     setShowConfirm(false);
     setClientToDelete(null);
   };
-
   if (isLoading)
     return (
       <Box minHeight="xl" sx={{ position: "relative" }}>
