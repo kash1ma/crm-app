@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import logo from "../assets/logogo.png";
+import debounce from "../../utility/debounce.js";
 import { getClients } from "../../services/clientsService.js";
 
 function Header() {
@@ -28,7 +29,7 @@ function Header() {
     fetchClients();
   }, []);
 
-  const handleSearch = (event, value) => {
+  const handleSearch = debounce((event, value) => {
     setSearchTerm(value);
     //const fullName = client.name + " " + client.surname;
     if (value) {
@@ -40,7 +41,7 @@ function Header() {
     } else {
       setFilteredClients([]);
     }
-  };
+  }, 400)
 
   const handleClientSelect = (event, client) => {
     if (client && client.id) {

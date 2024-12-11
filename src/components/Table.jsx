@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { getClients, deleteClient } from "../../services/clientsService";
 import sortByName from "../../utility/sortByName";
 import sortById from "../../utility/sortById";
@@ -152,7 +152,7 @@ const ClientsTable = () => {
     fetchClients();
   }
 
-  function handleSort(column) {
+  const handleSort =  (column) => {
     if (column === "id") {
       const direction =
         sortConfigId.direction === "ascending" ? "descending" : "ascending";
