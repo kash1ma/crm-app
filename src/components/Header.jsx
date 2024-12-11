@@ -61,7 +61,7 @@ function Header() {
             freeSolo
             options={filteredClients}
             getOptionLabel={(option) =>
-              option.name + " " + option.surname + " " + option.lastName || ""
+              option.name + " " + option.surname || ""
             }
             renderInput={(params) => (
               <TextField
