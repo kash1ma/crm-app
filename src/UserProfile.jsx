@@ -119,15 +119,15 @@ export default function UserProfile() {
   }
 
   return (
-    <Container sx={{ mt: 6, color: "#fff" }} maxWidth="lg">
+    <Container sx={{ mt: 6, color: "#fff" }} maxWidth="xxl">
       <Button
         onClick={handleReturn}
         sx={{ position: "relative", color: "white" }}
       >
         <FirstPageIcon></FirstPageIcon>
       </Button>
-      <Typography variant="h4" sx={{ fontWeight: "bold", mb: 4 }}>
-        {`${client.name} ${client.surname} `} ID{id}
+      <Typography variant="h1" sx={{ fontWeight: "bolder", mb: 4 }}>
+        {`${client.name} ${client.surname} ${client.lastName || ""} `} ID{id}
       </Typography>
 
       <Grid2 container spacing={4}>
