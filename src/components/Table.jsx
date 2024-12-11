@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  getClients,
-  deleteClient,
-  createClient,
-} from "../../services/clientsService";
+import { getClients, deleteClient } from "../../services/clientsService";
 import sortByName from "../../utility/sortByName";
 import sortById from "../../utility/sortById";
 import sortByDate from "../../utility/sortByDate";
@@ -11,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import extractDateTime from "../../utility/extractDateTime";
 import ClientForm from "./CreationForm";
+import UpdateForm from "./UpdateForm";
 import {
   Table,
   TableBody,
@@ -26,22 +23,16 @@ import {
   Tooltip,
   Box,
   Modal,
+  Fade,
 } from "@mui/material";
-
+import Header from "./Header";
 import VkIcon from "../assets/icons/vk.svg";
 import PhoneIcon from "../assets/icons/Phone icon.svg";
 import GitIcon from "../assets/icons/Git icon.svg";
 import FacebookIcon from "../assets/icons/fb.svg";
 import EmailIcon from "../assets/icons/email.svg";
-
 import CloseIcon from "@mui/icons-material/Close";
-
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-
-import { Margin } from "@mui/icons-material";
-import UpdateForm from "./UpdateForm";
-
-import { Fade } from "@mui/material";
 
 const style = {
   margin: "0 auto",
@@ -219,6 +210,7 @@ const ClientsTable = () => {
 
   return (
     <>
+      <Header />
       <Container sx={{ mt: 6 }} maxWidth="xll">
         <Typography
           variant="h2"

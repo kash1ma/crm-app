@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import TextField from "@mui/material/TextField";
@@ -11,6 +12,7 @@ function Header() {
   const [clients, setClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredClients, setFilteredClients] = useState([]);
+  const navigate = useNavigate();
 
   const fetchClients = async () => {
     try {
@@ -43,6 +45,7 @@ function Header() {
   const handleClientSelect = (event, client) => {
     if (client && client.id) {
       console.log("Selected client ID:", client.id);
+      navigate(`/clients/${client.id}`);
     }
   };
 
