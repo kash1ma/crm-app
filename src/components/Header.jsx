@@ -35,7 +35,7 @@ function Header() {
     if (value) {
       const filtered = clients.filter((client) => {
         const fullName = client.name + " " + client.surname;
-        return fullName.toLowerCase().includes(value.toLowerCase());
+        return fullName.toLowerCase().startsWith(value.toLowerCase());
       });
       setFilteredClients(filtered);
     } else {
