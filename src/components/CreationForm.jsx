@@ -52,7 +52,7 @@ export default function ClientForm({ onClose }) {
     switch (type) {
       case "phone":
         return "Введите номер телефона";
-      case "Email":
+      case "email":
         return "Введите адрес электронной почты";
       case "Facebook":
         return "Введите ссылку на профиль";
@@ -164,7 +164,7 @@ export default function ClientForm({ onClose }) {
                 }
               >
                 <MenuItem value="phone">Телефон</MenuItem>
-                <MenuItem value="Email">Емейл</MenuItem>
+                <MenuItem value="email">Емейл</MenuItem>
                 <MenuItem value="Facebook">Фейсбук</MenuItem>
                 <MenuItem value="VK">ВК</MenuItem>
                 <MenuItem value="Other">Другое</MenuItem>
