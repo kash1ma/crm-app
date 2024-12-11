@@ -219,7 +219,7 @@ const ClientsTable = () => {
 
   return (
     <>
-      <Container sx={{ mt: 6 }} maxWidth="xl">
+      <Container sx={{ mt: 6 }} maxWidth="xll">
         <Typography
           variant="h2"
           component="h1"
