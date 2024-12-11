@@ -19,6 +19,10 @@ import {
   IconButton,
   FormControlLabel,
   Radio,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   Grid2,
 } from "@mui/material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
@@ -30,6 +34,8 @@ import validator from "validator";
 export default function UserProfile() {
   const { id } = useParams();
   const [client, setClient] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [clientToDelete, setClientToDelete] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -50,22 +56,24 @@ export default function UserProfile() {
 
   console.log(client);
 
-  function handleDelete(id) {
-    deleteClient(id)
-      .then(() => {
-        setClients((prevClients) =>
-          prevClients.filter((client) => client.id !== id)
-        );
-        console.log("Client successfully deleted");
-      })
-      .catch((err) => {
-        setError(err.response?.data?.message || "Failed to delete client");
-      });
-    fetchClients();
-    console.log("Client successfully deleted");
+  function handleDelete() {
+    setClientToDelete(client.id);
+    setShowConfirm(true);
   }
-  const handleInputChange = (field, value) => {
-    setClient((prev) => ({ ...prev, [field]: value }));
+
+  const confirmDelete = async () => {
+    try {
+      await deleteClient(clientToDelete);
+
+      setShowConfirm(false);
+      setClientToDelete(null);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to delete client");
+    }
+  };
+  const cancelDelete = () => {
+    setShowConfirm(false);
+    setClientToDelete(null);
   };
 
   const handleSave = async () => {
@@ -226,6 +234,77 @@ export default function UserProfile() {
         >
           Remove User
         </Button>
+        <Dialog
+          sx={{
+            "& .MuiDialog-paper": {
+              backgroundColor: "#1B1B1B",
+              width: "424px",
+              height: "274px",
+              borderRadius: "30px",
+            },
+          }}
+          open={showConfirm}
+          onClose={cancelDelete}
+        >
+          <DialogTitle
+            sx={{
+              color: "white",
+              textAlign: "center",
+              marginTop: "25px",
+              fontSize: "18px",
+            }}
+          >
+            Удалить клиента
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              color: "white",
+              textAlign: "center",
+              fontSize: "14px",
+              maxWidth: "300px",
+              marginLeft: "auto",
+              marginRight: "auto",
+            }}
+          >
+            Вы действительно хотите удалить данного клиента?
+          </DialogContent>
+          <DialogActions
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <Button
+              onClick={confirmDelete}
+              color="error"
+              sx={{
+                color: "white",
+                borderRadius: "13px",
+                padding: "13px",
+                width: "150px",
+                height: "40px",
+                backgroundColor: "#555555",
+                fontSize: "14px",
+                textTransform: "none",
+              }}
+            >
+              Удалить
+            </Button>
+            <Button
+              onClick={cancelDelete}
+              color="primary"
+              sx={{
+                color: "#8F8F8F",
+                fontSize: "12px",
+                textTransform: "none",
+              }}
+            >
+              Отмена
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Container>
   );
