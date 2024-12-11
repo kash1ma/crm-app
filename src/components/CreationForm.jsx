@@ -13,12 +13,14 @@ import {
 import { createClient } from "../../services/clientsService";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
+import validator from "validator";
 
 export default function ClientForm({ onClose }) {
   const [contacts, setContacts] = useState([{ type: "phone", value: "" }]);
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [surname, setSurname] = useState("");
+  const [errors, setErrors] = useState({});
 
   const style = {
     background: "#292929",
@@ -65,23 +67,57 @@ export default function ClientForm({ onClose }) {
     }
   };
 
+  const validateForm = () => {
+    let tempErrors = {};
+
+    if (validator.isEmpty(name)) {
+      tempErrors.name = "Имя обязательно";
+    }
+
+    if (validator.isEmpty(surname)) {
+      tempErrors.surname = "Фамилия обязательна";
+    }
+
+    contacts.forEach((contact, index) => {
+      if (validator.isEmpty(contact.value)) {
+        tempErrors[`contact${index}`] = "Контакт не может быть пустым";
+      } else if (
+        contact.type === "email" &&
+        !validator.isEmail(contact.value)
+      ) {
+        tempErrors[`contact${index}`] = "Неверный формат email";
+      } else if (
+        contact.type === "phone" &&
+        !validator.isMobilePhone(contact.value, "any", { strictMode: false })
+      ) {
+        tempErrors[`contact${index}`] = "Неверный формат телефона";
+      }
+    });
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (validateForm()) {
+      const clientData = {
+        name,
+        lastName,
+        surname,
+        contacts,
+      };
+      console.log(clientData);
 
-    const clientData = {
-      name,
-      lastName,
-      surname,
-      contacts,
-    };
-    console.log(clientData);
-
-    try {
-      await createClient(clientData);
-      console.log("Client created successfully", clientData);
-      onClose();
-    } catch (error) {
-      console.error("Error creating client:", error);
+      try {
+        await createClient(clientData);
+        console.log("Client created successfully", clientData);
+        onClose();
+      } catch (error) {
+        console.error("Error creating client:", error);
+      }
+    } else {
+      console.error("Form validation errors:", errors);
     }
   };
 
@@ -109,6 +145,8 @@ export default function ClientForm({ onClose }) {
           placeholder="Введите имя"
           required
           fullWidth
+          error={!!errors.name}
+          helperText={errors.name}
         />
 
         <TextField
@@ -119,6 +157,8 @@ export default function ClientForm({ onClose }) {
           placeholder="Введите фамилию"
           required
           fullWidth
+          error={!!errors.surname}
+          helperText={errors.surname}
         />
 
         <TextField
@@ -204,6 +244,8 @@ export default function ClientForm({ onClose }) {
               placeholder={getPlaceholderText(contact.type)}
               required
               fullWidth
+              error={!!errors[`contact${index}`]}
+              helperText={errors[`contact${index}`]}
             />
             <IconButton
               onClick={() => handleRemoveContact(index)}

@@ -13,13 +13,14 @@ import {
 } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CloseIcon from "@mui/icons-material/Close";
-import { Delete } from "@mui/icons-material";
+import validator from "validator";
 
 export default function UpdateForm({ onClose, client }) {
   const [contacts, setContacts] = useState(JSON.parse(client.contacts) || []);
   const [name, setName] = useState(client.name || "");
   const [lastName, setLastName] = useState(client.lastName || "");
   const [surname, setSurname] = useState(client.surname || "");
+  const [errors, setErrors] = useState({});
 
   const handleAddContact = () => {
     if (contacts.length < 10) {
@@ -38,23 +39,58 @@ export default function UpdateForm({ onClose, client }) {
     setContacts(updatedContacts);
   };
 
+  const validateForm = () => {
+    let tempErrors = {};
+
+    if (validator.isEmpty(name)) {
+      tempErrors.name = "Имя обязательно";
+    }
+
+    if (validator.isEmpty(surname)) {
+      tempErrors.surname = "Фамилия обязательна";
+    }
+
+    contacts.forEach((contact, index) => {
+      if (validator.isEmpty(contact.value)) {
+        tempErrors[`contact${index}`] = "Контакт не может быть пустым";
+      } else if (
+        contact.type === "email" &&
+        !validator.isEmail(contact.value)
+      ) {
+        tempErrors[`contact${index}`] = "Неверный формат email";
+      } else if (
+        contact.type === "phone" &&
+        !validator.isMobilePhone(contact.value, "any", { strictMode: false })
+      ) {
+        tempErrors[`contact${index}`] = "Неверный формат телефона";
+      }
+    });
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const updatedClient = {
-      id: client.id,
-      name,
-      lastName,
-      surname,
-      contacts,
-    };
+    if (validateForm()) {
+      const updatedClient = {
+        id: client.id,
+        name,
+        lastName,
+        surname,
+        contacts,
+      };
 
-    try {
-      await updateClient(client.id, updatedClient);
-      console.log("Client updated successfully", updatedClient);
-      onClose();
-    } catch (error) {
-      console.error("Error updating client:", error);
+      try {
+        await updateClient(client.id, updatedClient);
+        console.log("Client updated successfully", updatedClient);
+        onClose();
+      } catch (error) {
+        console.error("Error updating client:", error);
+      }
+    } else {
+      console.log("Form has errors, please correct them");
     }
   };
 
@@ -110,6 +146,8 @@ export default function UpdateForm({ onClose, client }) {
           placeholder="Введите имя"
           required
           fullWidth
+          error={!!errors.name}
+          helperText={errors.name}
         />
 
         <TextField
@@ -120,6 +158,8 @@ export default function UpdateForm({ onClose, client }) {
           placeholder="Введите фамилию"
           required
           fullWidth
+          error={!!errors.surname}
+          helperText={errors.surname}
         />
 
         <TextField
@@ -204,6 +244,8 @@ export default function UpdateForm({ onClose, client }) {
               placeholder={getPlaceholderText(contact.type)}
               required
               fullWidth
+              error={!!errors[`contact${index}`]}
+              helperText={errors[`contact${index}`]}
             />
 
             <IconButton
