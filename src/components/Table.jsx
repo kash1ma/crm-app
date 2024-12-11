@@ -220,7 +220,7 @@ const ClientsTable = () => {
     return (
       <Box minHeight="xl" sx={{ position: "relative" }}>
         <CircularProgress
-          sx={{ position: "absolute", left: "50%", top: "50vh" }}
+          sx={{ position: "absolute", left: "50%", top: "50vh", color : "red" }}
           color="blue"
         />
       </Box>
