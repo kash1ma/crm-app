@@ -22,8 +22,8 @@ import {
   Typography,
   Container,
   CircularProgress,
-  Alert,
   Button,
+  Tooltip,
   Box,
   Modal,
 } from "@mui/material";
@@ -301,16 +301,28 @@ const ClientsTable = () => {
                       sx={{ display: "flex", justifyContent: "center", gap: 1 }}
                     >
                       {Array.from(JSON.parse(client.contacts)).map((item) => (
-                        <img
+                        <Tooltip
                           key={item.type}
-                          style={{
-                            height: "2.5vh",
-                            aspectRatio: 1,
-                            color: "blue",
-                          }}
-                          src={icons[item.type]}
-                          alt=""
-                        />
+                          title={
+                            <Typography sx={{ color: "white" }}>
+                              {item.value || "Unknown"}
+                            </Typography>
+                          }
+                          placement="top"
+                          arrow
+                        >
+                          <img
+                            key={item.type}
+                            style={{
+                              height: "3.5vh",
+                              aspectRatio: 1,
+                              color: "blue",
+                              cursor: "pointer",
+                            }}
+                            src={icons[item.type]}
+                            alt=""
+                          />
+                        </Tooltip>
                       ))}
                     </Box>
                   </TableCell>
