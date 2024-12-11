@@ -65,21 +65,21 @@ const ClientsTable = () => {
       id: "name",
       label: "Имя Фамилия Отчество",
       sort() {
-        handleSort("name")
+        handleSort("name");
       },
     },
     {
       id: "createTime",
       label: "Дата и время создания",
       sort() {
-        handleSort("createTime")
+        handleSort("createTime");
       },
     },
     {
       id: "lastChange",
       label: "Последние изменения",
       sort() {
-        handleSort("lastChange")
+        handleSort("lastChange");
       },
     },
     {
@@ -89,11 +89,11 @@ const ClientsTable = () => {
     {
       id: "id",
       label: "Действия",
-    }
+    },
   ];
 
   const icons = {
-    Email: EmailIcon,
+    email: EmailIcon,
     Facebook: FacebookIcon,
     Other: GitIcon,
     phone: PhoneIcon,
@@ -116,7 +116,7 @@ const ClientsTable = () => {
   });
   const [sortConfigLastChange, setSortConfigLastChange] = useState({
     direction: "ascending",
-  })
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchClients = async () => {
@@ -162,26 +162,33 @@ const ClientsTable = () => {
   }
 
   function handleSort(column) {
-    if (column === "id") { 
-      const direction = 
-      sortConfigId.direction === "ascending" ? "descending" : "ascending";
+    if (column === "id") {
+      const direction =
+        sortConfigId.direction === "ascending" ? "descending" : "ascending";
       setSortConfigId({ direction });
       setClients(sortById(clients, direction));
     }
     if (column === "name") {
-      const direction = sortConfigName.direction === "ascending" ? "descending" : "ascending";
-      setSortConfigName({direction});
-      setClients(sortByName(clients, direction))
+      const direction =
+        sortConfigName.direction === "ascending" ? "descending" : "ascending";
+      setSortConfigName({ direction });
+      setClients(sortByName(clients, direction));
     }
     if (column === "createTime") {
-      const direction = sortConfigCreatedTime.direction === "ascending" ? "descending" : "ascending";
-      setSortConfigCreatedTime({direction});
-      setClients(sortByDate(clients, "createdAt", direction))
+      const direction =
+        sortConfigCreatedTime.direction === "ascending"
+          ? "descending"
+          : "ascending";
+      setSortConfigCreatedTime({ direction });
+      setClients(sortByDate(clients, "createdAt", direction));
     }
-    if (column === "lastChange"){
-      const direction = sortConfigLastChange.direction === "ascending" ? "descending" : "ascending";
-      setSortConfigLastChange({direction});
-      setClients(sortByDate(clients, "updatedAt", direction))
+    if (column === "lastChange") {
+      const direction =
+        sortConfigLastChange.direction === "ascending"
+          ? "descending"
+          : "ascending";
+      setSortConfigLastChange({ direction });
+      setClients(sortByDate(clients, "updatedAt", direction));
     }
   }
 
