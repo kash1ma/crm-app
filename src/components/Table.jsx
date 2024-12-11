@@ -390,6 +390,7 @@ const ClientsTable = () => {
           onClick={handleShow}
           sx={{
             marginTop: "2rem",
+            marginBottom: "2rem",
             background: "white",
             border: "1px solid #6D92D6",
             height: "44px",
