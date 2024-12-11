@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   getClientById,
   updateClient,
@@ -32,6 +32,7 @@ import BackIcon from "./assets/icons/Back.svg";
 import validator from "validator";
 
 export default function UserProfile() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [client, setClient] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -113,9 +114,16 @@ export default function UserProfile() {
     }
   };
 
+  function handleReturn() {
+    navigate("/");
+  }
+
   return (
     <Container sx={{ mt: 6, color: "#fff" }} maxWidth="lg">
-      <Button sx={{ position: "relative", color: "white" }}>
+      <Button
+        onClick={handleReturn}
+        sx={{ position: "relative", color: "white" }}
+      >
         <FirstPageIcon></FirstPageIcon>
       </Button>
       <Typography variant="h4" sx={{ fontWeight: "bold", mb: 4 }}>
