@@ -7,7 +7,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import extractDateTime from "../../utility/extractDateTime";
 import ClientForm from "./CreationForm";
-import UpdateForm from "./UpdateForm";
 import {
   Table,
   TableBody,
@@ -36,8 +35,6 @@ import PhoneIcon from "../assets/icons/Phone icon.svg";
 import GitIcon from "../assets/icons/Git icon.svg";
 import FacebookIcon from "../assets/icons/fb.svg";
 import EmailIcon from "../assets/icons/email.svg";
-import CloseIcon from "@mui/icons-material/Close";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -45,8 +42,6 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import { Margin } from "@mui/icons-material";
 import UpdateForm from "./UpdateForm";
-
-import { Fade } from "@mui/material";
 
 const style = {
   margin: "0 auto",
@@ -233,6 +228,7 @@ const ClientsTable = () => {
 
   return (
     <>
+      <Header />
       <Container sx={{ mt: 6 }} maxWidth="xl">
         <Typography
           variant="h2"
