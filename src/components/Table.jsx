@@ -42,6 +42,7 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import { Margin } from "@mui/icons-material";
 import UpdateForm from "./UpdateForm";
+
 const style = {
   margin: "0 auto",
   marginTop: 15,
