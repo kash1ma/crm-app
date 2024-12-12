@@ -14,6 +14,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Paper,
   Typography,
   Container,
@@ -43,6 +44,8 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
 import { Margin } from "@mui/icons-material";
 import UpdateForm from "./UpdateForm";
+
+import { Fade } from "@mui/material";
 
 const style = {
   margin: "0 auto",
@@ -220,7 +223,7 @@ const ClientsTable = () => {
     return (
       <Box minHeight="xl" sx={{ position: "relative" }}>
         <CircularProgress
-          sx={{ position: "absolute", left: "50%", top: "50vh", color : "red" }}
+          sx={{ position: "absolute", left: "50%", top: "50vh", color: "red" }}
           color="blue"
         />
       </Box>
