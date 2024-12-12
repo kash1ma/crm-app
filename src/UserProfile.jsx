@@ -30,6 +30,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import CloseIcon from "@mui/icons-material/Close";
 import BackIcon from "./assets/icons/Back.svg";
 import validator from "validator";
+import PanoramaWideAngleSelectIcon from "@mui/icons-material/PanoramaWideAngleSelect";
 
 export default function UserProfile() {
   const navigate = useNavigate();
@@ -145,15 +146,12 @@ export default function UserProfile() {
           padding: 4,
         }}
       >
-        <Button onClick={handleReturn} sx={{ color: "white" }}>
-          <FirstPageIcon
-            sx={{
-              position: "relative",
-              right: "4rem",
-              width: "2rem",
-              height: "2rem",
-            }}
-          ></FirstPageIcon>
+
+        <Button
+          onClick={handleReturn}
+          sx={{ color: "white", position: "relative", right: "4rem" }}
+        >
+          <FirstPageIcon sx={{ width: "2rem", height: "2rem" }}></FirstPageIcon>
         </Button>
         <Typography variant="h1" sx={{ fontWeight: "bolder", mb: 4 }}>
           {`${client.name} ${client.surname} ${client.lastName || ""} `} ID{id}
@@ -242,16 +240,17 @@ export default function UserProfile() {
                   row
                   value={client.gender || ""}
                   onChange={(e) => handleInputChange("gender", e.target.value)}
+                  sx={{ display: "flex", gap: "2rem" }}
                 >
                   <FormControlLabel
                     value="Male"
-                    control={<Radio />}
+                    control={<PanoramaWideAngleSelectIcon />}
                     label="Male"
-                    sx={{ color: "#CBCBCB", marginLeft: "0.4rem" }}
+                    sx={{ color: "#CBCBCB", marginLeft: "1.5rem" }}
                   />
                   <FormControlLabel
                     value="Female"
-                    control={<Radio />}
+                    control={<PanoramaWideAngleSelectIcon />}
                     label="Female"
                     sx={{ color: "#CBCBCB" }}
                   />
