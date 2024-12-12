@@ -68,6 +68,7 @@ export default function UserProfile() {
 
       setShowConfirm(false);
       setClientToDelete(null);
+      handleReturn();
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete client");
     }
@@ -145,7 +146,14 @@ export default function UserProfile() {
         }}
       >
         <Button onClick={handleReturn} sx={{ color: "white" }}>
-          <FirstPageIcon sx={{position: "relative", right:"4rem", width:"2rem", height:"2rem"}}></FirstPageIcon>
+          <FirstPageIcon
+            sx={{
+              position: "relative",
+              right: "4rem",
+              width: "2rem",
+              height: "2rem",
+            }}
+          ></FirstPageIcon>
         </Button>
         <Typography variant="h1" sx={{ fontWeight: "bolder", mb: 4 }}>
           {`${client.name} ${client.surname} ${client.lastName || ""} `} ID{id}
@@ -228,7 +236,7 @@ export default function UserProfile() {
                   variant="body1"
                   sx={{ mb: 2, marginLeft: 10, fontSize: 25 }}
                 >
-                  Sex
+                  Sex (netu)
                 </Typography>
                 <RadioGroup
                   row
