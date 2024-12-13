@@ -234,7 +234,7 @@ export default function UserProfile() {
                   variant="body1"
                   sx={{ mb: 2, marginLeft: 10, fontSize: 25 }}
                 >
-                  Sex (netu)
+                  Sex
                 </Typography>
                 <RadioGroup
                   row
