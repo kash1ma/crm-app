@@ -1,9 +1,5 @@
-import { useState, useEffect } from "react";
-import {
-  getClients,
-  deleteClient,
-  createClient,
-} from "../../services/clientsService";
+import { useState, useEffect, useMemo } from "react";
+import { getClients, deleteClient } from "../../services/clientsService";
 import sortByName from "../../utility/sortByName";
 import sortById from "../../utility/sortById";
 import sortByDate from "../../utility/sortByDate";
@@ -27,11 +23,15 @@ import {
   Button,
   Box,
   Modal,
+  Fade,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material";
+
+import Header from "./Header";
+
 
 import VkIcon from "../assets/icons/vk.svg";
 import PhoneIcon from "../assets/icons/Phone icon.svg";
@@ -43,10 +43,8 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 
-import { Margin } from "@mui/icons-material";
-import UpdateForm from "./UpdateForm";
 
-import { Fade } from "@mui/material";
+import UpdateForm from "./UpdateForm";
 
 const style = {
   margin: "0 auto",
@@ -233,6 +231,7 @@ const ClientsTable = () => {
 
   return (
     <>
+      <Header />
       <Container sx={{ mt: 6 }} maxWidth="xl">
         <Typography
           variant="h2"
