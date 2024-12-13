@@ -29,7 +29,9 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+
 import Header from "./Header";
+
 
 import VkIcon from "../assets/icons/vk.svg";
 import PhoneIcon from "../assets/icons/Phone icon.svg";
@@ -40,6 +42,7 @@ import EmailIcon from "../assets/icons/email.svg";
 import CloseIcon from "@mui/icons-material/Close";
 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+
 
 import UpdateForm from "./UpdateForm";
 
@@ -215,6 +218,7 @@ const ClientsTable = () => {
     setShowConfirm(false);
     setClientToDelete(null);
   };
+
   if (isLoading)
     return (
       <Box minHeight="xl" sx={{ position: "relative" }}>
