@@ -38,13 +38,22 @@ export default function UserProfile() {
   const [client, setClient] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [clientToDelete, setClientToDelete] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const userData = await getClientById(id);
         setClient(userData);
-        console.log(client);
+        setContacts(userData.contacts || []);
+        setName(userData.name || "");
+        setLastName(userData.lastName || "");
+        setSurname(userData.surname || "");
+        console.log(userData);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -56,6 +65,7 @@ export default function UserProfile() {
   if (!client) {
     return <div>Loading...</div>;
   }
+  console.log(contacts);
 
   function handleDelete() {
     setClientToDelete(client.id);
@@ -81,10 +91,58 @@ export default function UserProfile() {
   const handleSave = async () => {
     try {
       await updateClient(id, client);
-      alert("User updated successfully!");
+      console.log("User updated successfully!");
     } catch (error) {
       console.error("Error updating user:", error);
     }
+  };
+
+  const handleAddContact = () => {
+    if (contacts.length < 10) {
+      setContacts([...contacts, { type: "phone", value: "" }]);
+    }
+  };
+
+  const handleContactChange = (index, field, value) => {
+    const updatedContacts = [...contacts];
+    updatedContacts[index][field] = value;
+    setContacts(updatedContacts);
+  };
+
+  const handleRemoveContact = (index) => {
+    const updatedContacts = contacts.filter((_, i) => i !== index);
+    setContacts(updatedContacts);
+  };
+
+  const validateForm = () => {
+    let tempErrors = {};
+
+    if (validator.isEmpty(name)) {
+      tempErrors.name = "Имя обязательно";
+    }
+
+    if (validator.isEmpty(surname)) {
+      tempErrors.surname = "Фамилия обязательна";
+    }
+
+    contacts.forEach((contact, index) => {
+      if (validator.isEmpty(contact.value)) {
+        tempErrors[`contact${index}`] = "Контакт не может быть пустым";
+      } else if (
+        contact.type === "email" &&
+        !validator.isEmail(contact.value)
+      ) {
+        tempErrors[`contact${index}`] = "Неверный формат email";
+      } else if (
+        contact.type === "phone" &&
+        !validator.isMobilePhone(contact.value, "any", { strictMode: false })
+      ) {
+        tempErrors[`contact${index}`] = "Неверный формат телефона";
+      }
+    });
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
   };
 
   //const styleinput = {
@@ -125,31 +183,27 @@ export default function UserProfile() {
 
   console.log(client);
 
-  const handleInputChange = (e, value) => {
-    if (e === "surname") {
-      setClient((prev) => ({
-        ...prev,
-        [e]: value,
-      }));
-    }
-    if (e === "name") {
-      setClient((prev) => ({
-        ...prev,
-        [e]: value,
-      }));
-    }
-    if (e === "lastName") {
-      setClient((prev) => ({
-        ...prev,
-        [e]: value,
-      }));
-    }
-    if(e === "phone"){
-      console.log(client.contacts[1].value)
-      setClient((prev) => ({
-        ...prev,
-        [client.contacts[1].value]: value,
-      }));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      const updatedClient = {
+        id: client.id,
+        name,
+        lastName,
+        surname,
+        contacts,
+      };
+
+      try {
+        await updateClient(client.id, updatedClient);
+        console.log("Client updated successfully", updatedClient);
+        onClose();
+      } catch (error) {
+        console.error("Error updating client:", error);
+      }
+    } else {
+      console.log("Form has errors, please correct them");
     }
   };
 
@@ -184,7 +238,12 @@ export default function UserProfile() {
         >
           <Typography
             variant="h1"
-            sx={{ fontWeight: "bolder", mb: 4, fontSize: "5vh", textAlign: "center" }}
+            sx={{
+              fontWeight: "bolder",
+              mb: 4,
+              fontSize: "5vh",
+              textAlign: "center",
+            }}
           >
             {`${client.name} ${client.surname} ${client.lastName || ""} `} ID
             {id}
@@ -192,7 +251,6 @@ export default function UserProfile() {
 
           <Grid2 container spacing={29}>
             <Grid2
-              item
               xs={12}
               md={6}
               sx={{
@@ -225,20 +283,23 @@ export default function UserProfile() {
               >
                 <TextField
                   label="Фамилия"
-                  value={client.surname}
-                  onChange={(e) => handleInputChange("surname", e.target.value)}
+                  value={surname}
+                  onChange={(e) => setSurname(e.target.value)}
+                  required
+                  error={!!errors.surname}
+                  helperText={errors.surname}
                   sx={{
-                    
                     "& .MuiInputBase-root": {
-                      color: "white", 
+                      color: "white",
                     },
                     "& .MuiInputLabel-root": {
-                      color: "white", 
+                      color: "white",
                     },
-                    
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "white"
-                    },
+
+                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "white",
+                      },
                   }}
                 />
 
@@ -251,11 +312,12 @@ export default function UserProfile() {
                       color: "white",
                     },
                     "& .MuiInputLabel-root": {
-                      color: "white", 
+                      color: "white",
                     },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "white"
-                    },
+                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "white",
+                      },
                   }}
                 />
 
@@ -267,21 +329,21 @@ export default function UserProfile() {
                   }
                   sx={{
                     "& .MuiInputBase-root": {
-                      color: "white", 
+                      color: "white",
                     },
                     "& .MuiInputLabel-root": {
-                      color: "white", 
+                      color: "white",
                     },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "white"
-                    },
+                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "white",
+                      },
                   }}
                 />
               </Box>
             </Grid2>
 
             <Grid2
-              item
               xs={12}
               md={6}
               sx={{ display: "flex", flexDirection: "column", gap: 5 }}
@@ -297,21 +359,29 @@ export default function UserProfile() {
               >
                 Contact Info
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2, width: 400 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                  width: 400,
+                }}
+              >
                 <TextField
                   label="Email"
                   value={client.email || ""}
                   onChange={(e) => handleInputChange("email", e.target.value)}
                   sx={{
                     "& .MuiInputBase-root": {
-                      color: "white", 
+                      color: "white",
                     },
                     "& .MuiInputLabel-root": {
                       color: "white",
                     },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "white"
-                    },
+                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "white",
+                      },
                   }}
                 />
                 <TextField
@@ -320,14 +390,15 @@ export default function UserProfile() {
                   onChange={(e) => handleInputChange("phone", e.target.value)}
                   sx={{
                     "& .MuiInputBase-root": {
-                      color: "white", 
+                      color: "white",
                     },
                     "& .MuiInputLabel-root": {
                       color: "white",
                     },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "white"
-                    },
+                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "white",
+                      },
                   }}
                 />
                 <Typography
@@ -348,21 +419,21 @@ export default function UserProfile() {
                   onChange={(e) => handleInputChange("vk", e.target.value)}
                   sx={{
                     "& .MuiInputBase-root": {
-                      color: "white", 
+                      color: "white",
                     },
                     "& .MuiInputLabel-root": {
                       color: "white",
                     },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "white"
-                    },
-                  }} 
+                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        borderColor: "white",
+                      },
+                  }}
                 />
               </Box>
             </Grid2>
           </Grid2>
 
-          
           <Box sx={{ display: "flex", gap: 1, mt: 4 }}>
             <Button
               variant="contained"
