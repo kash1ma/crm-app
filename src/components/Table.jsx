@@ -443,43 +443,45 @@ const ClientsTable = () => {
           aria-labelledby="modal-title"
           sx={{ overflow: "scroll" }}
         >
-          <Box
-            sx={{
-              ...style,
-              transform: "translateY(20px)",
-              transition: "transform 0.3s ease-out",
-            }}
-          >
-            <Typography
-              id="modal-title"
-              variant="h6"
-              component="h2"
+          <Fade in={showEdit} timeout={1000}>
+            <Box
               sx={{
-                padding: "3rem 0 0 2rem",
-                fontSize: 35,
-                color: "white",
+                ...style,
+                transform: "translateY(20px)",
+                transition: "transform 0.3s ease-out",
               }}
             >
-              Обновить данные
-            </Typography>
-            <Button
-              onClick={handleCloseEdit}
-              sx={{
-                position: "relative",
-                top: -70,
-                left: 477,
-                color: "white",
-              }}
-            >
-              <CloseIcon
+              <Typography
+                id="modal-title"
+                variant="h6"
+                component="h2"
                 sx={{
-                  height: "3rem",
-                  width: "3rem",
+                  padding: "3rem 0 0 2rem",
+                  fontSize: 35,
+                  color: "white",
                 }}
-              ></CloseIcon>
-            </Button>
-            <UpdateForm onClose={handleCloseEdit} client={updatedClient} />
-          </Box>
+              >
+                Обновить данные
+              </Typography>
+              <Button
+                onClick={handleCloseEdit}
+                sx={{
+                  position: "relative",
+                  top: -70,
+                  left: 477,
+                  color: "white",
+                }}
+              >
+                <CloseIcon
+                  sx={{
+                    height: "3rem",
+                    width: "3rem",
+                  }}
+                ></CloseIcon>
+              </Button>
+              <UpdateForm onClose={handleCloseEdit} client={updatedClient} />
+            </Box>
+          </Fade>
         </Modal>
         <Button
           variant="contained"
@@ -508,7 +510,7 @@ const ClientsTable = () => {
           aria-labelledby="modal-title"
           sx={{ overflow: "scroll" }}
         >
-          <Fade in={show}>
+          <Fade in={show} timeout={1000}>
             <Box sx={style}>
               <Typography
                 id="modal-title"
