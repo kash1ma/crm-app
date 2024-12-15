@@ -43,6 +43,7 @@ export default function UserProfile() {
   const [lastName, setLastName] = useState("");
   const [surname, setSurname] = useState("");
   const [errors, setErrors] = useState({});
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -86,15 +87,6 @@ export default function UserProfile() {
   const cancelDelete = () => {
     setShowConfirm(false);
     setClientToDelete(null);
-  };
-
-  const handleSave = async () => {
-    try {
-      await updateClient(id, client);
-      console.log("User updated successfully!");
-    } catch (error) {
-      console.error("Error updating user:", error);
-    }
   };
 
   const handleAddContact = () => {
@@ -145,16 +137,17 @@ export default function UserProfile() {
     return Object.keys(tempErrors).length === 0;
   };
 
-  //const styleinput = {
-  //background: "#292929",
-  //borderRadius: 4,
-  //"& .MuiInputBase-input": {
-  //color: "#CBCBCB",
-  //},
-  //"& .MuiInputLabel-root": {
-  //color: "#CBCBCB",
-  //},
-  //};
+  const styleInput = {
+    "& .MuiInputBase-root": {
+      color: "white",
+    },
+    "& .MuiInputLabel-root": {
+      color: "white",
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "white",
+    },
+  };
 
   const style = {
     background: "#292929",
@@ -184,8 +177,6 @@ export default function UserProfile() {
   console.log(client);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
     if (validateForm()) {
       const updatedClient = {
         id: client.id,
@@ -198,7 +189,14 @@ export default function UserProfile() {
       try {
         await updateClient(client.id, updatedClient);
         console.log("Client updated successfully", updatedClient);
-        onClose();
+        const refreshedClientData = await getClientById(client.id);
+
+        // Update the state with the fresh data
+        setClient(refreshedClientData);
+        setContacts(refreshedClientData.contacts || []);
+        setName(refreshedClientData.name || "");
+        setLastName(refreshedClientData.lastName || "");
+        setSurname(refreshedClientData.surname || "");
       } catch (error) {
         console.error("Error updating client:", error);
       }
@@ -288,57 +286,21 @@ export default function UserProfile() {
                   required
                   error={!!errors.surname}
                   helperText={errors.surname}
-                  sx={{
-                    "& .MuiInputBase-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                      {
-                        borderColor: "white",
-                      },
-                  }}
+                  sx={styleInput}
                 />
 
                 <TextField
                   label="Имя"
-                  value={client.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
-                  sx={{
-                    "& .MuiInputBase-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                      {
-                        borderColor: "white",
-                      },
-                  }}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  sx={styleInput}
                 />
 
                 <TextField
                   label="Отчество"
-                  value={client.lastName || ""}
-                  onChange={(e) =>
-                    handleInputChange("lastName", e.target.value)
-                  }
-                  sx={{
-                    "& .MuiInputBase-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                      {
-                        borderColor: "white",
-                      },
-                  }}
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  sx={styleInput}
                 />
               </Box>
             </Grid2>
@@ -364,72 +326,139 @@ export default function UserProfile() {
                   display: "flex",
                   flexDirection: "column",
                   gap: 2,
-                  width: 400,
+                  width: 700,
                 }}
               >
-                <TextField
-                  label="Email"
-                  value={client.email || ""}
-                  onChange={(e) => handleInputChange("email", e.target.value)}
-                  sx={{
-                    "& .MuiInputBase-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                      {
-                        borderColor: "white",
-                      },
-                  }}
-                />
-                <TextField
-                  label="Phone"
-                  value={client.contacts[1].value || ""}
-                  onChange={(e) => handleInputChange("phone", e.target.value)}
-                  sx={{
-                    "& .MuiInputBase-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                      {
-                        borderColor: "white",
-                      },
-                  }}
-                />
-                <Typography
-                  variant="h5"
-                  sx={{
-                    mb: 2,
-                    fontSize: 50,
-                    fontWeight: "bold",
-                    margin: "0 auto",
-                    marginTop: 3,
-                  }}
-                >
-                  Social Links
-                </Typography>
-                <TextField
-                  label="VK"
-                  value={client.vk || ""}
-                  onChange={(e) => handleInputChange("vk", e.target.value)}
-                  sx={{
-                    "& .MuiInputBase-root": {
-                      color: "white",
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "white",
-                    },
-                    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                      {
-                        borderColor: "white",
-                      },
-                  }}
-                />
+                {contacts.map((contact, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      width: "100%", // Set the width to 100% to stretch across the modal
+                      backgroundColor: "#292929",
+                      padding: 0,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        padding: "1rem",
+                      }}
+                    >
+                      <FormControl fullWidth>
+                        <Select
+                          sx={{
+                            background: "#C5C5C5",
+                            fontWeight: 10,
+                            borderRadius: "0.3rem 0 0 0.3rem",
+                            "&:hover": {
+                              background: "#C5C5C5", // Keep the background color the same on hover
+                            },
+                          }}
+                          value={contact.type}
+                          onChange={(e) =>
+                            handleContactChange(index, "type", e.target.value)
+                          }
+                        >
+                          <MenuItem value="phone">Телефон</MenuItem>
+                          <MenuItem value="email">Емейл</MenuItem>
+                          <MenuItem value="Facebook">Фейсбук</MenuItem>
+                          <MenuItem value="VK">ВК</MenuItem>
+                          <MenuItem value="Other">Другое</MenuItem>
+                        </Select>
+                      </FormControl>
+
+                      <TextField
+                        sx={{
+                          width: 1000,
+                          background: "#292929",
+                          "& .MuiInputBase-input": {
+                            color: "#CBCBCB",
+                          },
+                          "& .MuiInputLabel-root": {
+                            color: "#CBCBCB",
+                          },
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "#434343",
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "#434343", // Keep the border color the same on hover
+                              borderLeft: "none",
+                              borderRadius: "0px",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#CBCBCB",
+                              borderLeft: "none",
+                              borderRadius: "0px",
+                            },
+                          },
+                        }}
+                        value={contact.value}
+                        onChange={(e) =>
+                          handleContactChange(index, "value", e.target.value)
+                        }
+                        placeholder={getPlaceholderText(contact.type)}
+                        required
+                        fullWidth
+                        error={!!errors[`contact${index}`]}
+                        helperText={errors[`contact${index}`]}
+                      />
+
+                      <IconButton
+                        onClick={() => handleRemoveContact(index)}
+                        sx={{
+                          width: 50,
+                          height: 50,
+                          background: "#141414",
+                          marginLeft: 1,
+                          marginTop: 0.5,
+                          "&:hover": {
+                            background: "#141414", // Keep the same background color on hover
+                          },
+                        }}
+                      >
+                        <CloseIcon
+                          sx={{
+                            width: 1,
+                            height: 1,
+                            color: "white",
+                          }}
+                        />
+                      </IconButton>
+                    </Box>
+                  </Box>
+                ))}
+                {contacts.length < 10 && (
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: 50,
+                      display: "flex",
+                      justifyContent: "center",
+                      backgroundColor: "#292929",
+                    }}
+                  >
+                    <Button
+                      variant="outlined"
+                      onClick={handleAddContact}
+                      sx={{
+                        border: "none",
+                        color: "white",
+                      }}
+                    >
+                      <AddCircleOutlineOutlinedIcon
+                        sx={{
+                          color: "aqua",
+                          marginBottom: 0.2,
+                          marginRight: 0.5,
+                        }}
+                      ></AddCircleOutlineOutlinedIcon>{" "}
+                      Добавить контакт
+                    </Button>
+                  </Box>
+                )}
               </Box>
             </Grid2>
           </Grid2>
@@ -438,7 +467,7 @@ export default function UserProfile() {
             <Button
               variant="contained"
               color="primary"
-              onClick={handleSave}
+              onClick={handleSubmit}
               sx={{
                 background: "#303030",
                 height: 90,
