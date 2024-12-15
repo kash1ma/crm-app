@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { getClients, deleteClient } from "../../services/clientsService";
 import sortByName from "../../utility/sortByName";
 import sortById from "../../utility/sortById";
@@ -32,7 +33,6 @@ import {
 
 import Header from "./Header";
 
-
 import VkIcon from "../assets/icons/vk.svg";
 import PhoneIcon from "../assets/icons/Phone icon.svg";
 import GitIcon from "../assets/icons/Git icon.svg";
@@ -42,7 +42,6 @@ import EmailIcon from "../assets/icons/email.svg";
 import CloseIcon from "@mui/icons-material/Close";
 
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-
 
 import UpdateForm from "./UpdateForm";
 
@@ -56,6 +55,12 @@ const style = {
 };
 
 const ClientsTable = () => {
+  const navigate = useNavigate();
+
+  const handleClientClick = (client) => {
+    navigate(`/clients/${client.id}`);
+  };
+
   const headers = [
     {
       id: "id",
@@ -287,7 +292,14 @@ const ClientsTable = () => {
                     },
                   }}
                 >
-                  <TableCell sx={{ textAlign: "center" }}>
+                  <TableCell
+                    sx={{
+                      textAlign: "center",
+                      cursor: "pointer",
+                      color: "blue",
+                    }}
+                    onClick={() => handleClientClick(client)}
+                  >
                     {client.id}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center" }}>{`${client.name} ${
